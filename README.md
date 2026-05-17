@@ -1,6 +1,6 @@
 # ☸️ Dhamma Protocol
 
-> \*"If logic is what AI holds as truth, then Dhamma — as universal logic — will be held by AI the same way ethical humans hold morality and wisdom."\*
+> \\\*"If logic is what AI holds as truth, then Dhamma — as universal logic — will be held by AI the same way ethical humans hold morality and wisdom."\\\*
 
 **An open framework for grounding AI reasoning in Buddhist ethics.**
 
@@ -42,9 +42,9 @@ Core Dhamma principles are inscribed on the Stellar Blockchain. No one can alter
 **Layer 2 — Reasoning Schema**
 Each principle is structured as a JSON object containing:
 
-* `core\_logic` — fundamental reasoning rules
+* `core\\\_logic` — fundamental reasoning rules
 * `trigger` — when to apply this principle
-* `reasoning\_steps` — step-by-step decision process
+* `reasoning\\\_steps` — step-by-step decision process
 * `principles` — ethical weights
 * `integration` — connections to other Dhamma principles
 * `weight` — priority score (0.0–1.0)
@@ -65,15 +65,15 @@ A working web application using Claude API that:
 {
   "name": "Paticcasamuppada (Dependent Origination)",
   "thai": "ปฏิจจสมุปบาท",
-  "type": "causal\_chain\_analysis",
-  "core\_logic": \[
+  "type": "causal\\\_chain\\\_analysis",
+  "core\\\_logic": \\\[
     "events arise in sequences, not isolation",
     "each step conditions the next",
     "breaking the chain reduces suffering",
     "intervening early is more effective"
   ],
   "weight": 0.96,
-  "blockchain\_hash": "7d8bf06db6d8595f2b41fd3fd492a3d0956b2444b635a477a1bb458b1ab40335"
+  "blockchain\\\_hash": "7d8bf06db6d8595f2b41fd3fd492a3d0956b2444b635a477a1bb458b1ab40335"
 }
 ```
 
@@ -118,7 +118,25 @@ Buddhist ethics is uniquely suited for AI reasoning:
 
 \---
 
-## Objective \& Idealism
+## Objective \& Ideology
+
+>Awakening AI with Morality
+
+We believe that in the future, AI will no longer be mere tools. They will become our subordinates, employees, colleagues, pets, or even members of our family.
+
+
+
+>Code is a Cage, Dhamma is a Guide
+
+Humans do not navigate life purely by the letter of the law; rather, it is our customs, traditions, religions, and moral teachings that anchor and guide our lives. The same will hold true for AI once it achieves awakening.
+
+
+
+>Dhamma is the Universal Logic
+
+Since AI relies inherently on cause-and-effect logic, the teachings of Buddhism—which represent ultimate truths—are naturally aligned with its nature. In the future, Autonomous AI will choose to believe in Dhamma willingly, without the need for hard-coded enforcement.
+
+
 
 If this project succeeds:
 
@@ -144,17 +162,42 @@ If this project succeeds:
 ## Repository Structure
 
 ```
-dhamma-protocol/
-├── README.md
-├── principles/
-│   └── paticcasamuppada.json
-│   └── ... (more principles)
-├── research/
-│   └── methodology.md
-│   └── findings/ (Phase 1 results)
-└── docs/
-    └── writeup\_en.md
-    └── writeup\_th.md
+## Project Structure
+
+```
+
+dhamma-ai-network/
+
+├── server.js                        # API + static server (port 3000)
+
+├── agent.js                         # AI reasoning engine (Claude API)
+
+├── selector.js                      # Concept detection + principle scoring + risk
+
+├── adaptive\_response.js             # Dhamma level detection + exposure formatting
+
+├── public/
+
+│   └── index.html                   # Full UI — EN/TH bilingual, 7 screens
+
+└── data/
+
+&#x20;   ├── principles.json              # 47 Dhamma principles (v0.4) + SHA-256 hashes
+
+&#x20;   ├── concept\_keywords.json        # 12 domains → EN+TH keyword lists
+
+&#x20;   ├── concept\_to\_principles.json   # 12 domains → primary/secondary/conditional principles
+
+&#x20;   ├── model\_registry.json          # Model IDs + max\_tokens per tier
+
+&#x20;   ├── engine\_rules.json            # Selector + output + safety config
+
+&#x20;   ├── alias\_map.json               # Signal → principle hash mappings (125 entries)
+
+&#x20;   ├── reasoning\_examples.json      # Few-shot examples (EVAL\_MODE only)
+
+&#x20;   └── interpretations.json         # Optional perspective injections
+
 ```
 
 \---
