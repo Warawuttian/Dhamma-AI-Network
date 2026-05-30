@@ -1,0 +1,159 @@
+{
+  "epistemic": {
+    "description": "Knowledge, truth, belief, evidence, verification, uncertainty, and reasoning.",
+    "principles": [
+      "kalama_sutta",
+      "yonisomanasikara",
+      "noble_eightfold_path",
+      "micchaditthi_3",
+      "panna_3"
+    ],
+    "keywords": {
+      "th": "จริงไหม,เชื่อได้ไหม,พิสูจน์,หลักฐาน,ข้อมูล,ข่าวลือ,เขาบอกว่า,แหล่งที่มา,แหล่งอ้างอิง,อ้างอิง,มโน,เข้าใจผิด,ความจริงคือ,สงสัยว่า,ตรรกะ,เหตุผล,ความเห็นส่วนตัว,ข้อเท็จจริง,งมงาย,ฟังตามกันมา,ตำราว่าไว้,ยืนยัน,ตรวจสอบ,แน่ใจเหรอ,คิดไปเอง,ภาพลวงตา,นิยาย,ทฤษฎี,สาระ,ความเชื่อ,ปัญญา,เข้าใจยาก,วิเคราะห์,จริงหรือเปล่า,จริงหรือไม่,เป็นไปได้ไหม,มั่ว,หลอกลวง,ข่าวปลอม,เฟคนิวส์,บิดเบือน,อคติ,เชื่อโดยไม่ตรวจสอบ,มีที่มาไหม,อ้างจากไหน,มีงานวิจัยไหม,ผลวิจัย,สรุปได้ไหม,สรุปเกินจริง,เดา,ไม่แน่ใจ,ไม่มีหลักฐาน,น่าเชื่อถือ,ไม่น่าเชื่อถือ",
+      "en": "is it true,evidence,proof,source,reliable,fact-check,fact check,rumor,believe,belief,knowledge,logic,misleading,reality,illusion,theory,research,data,verify,verification,doubt,certainty,bias,perspective,information,myth,truth,valid,insight,fake news,reasoning,investigation,objective,claim,fact,citation,reference,authority,expert,credible,trustworthy,unverified,unsupported,assumption,guess,speculation,hallucination,fabricated,made up,contradiction,confirm,cross-check,overconfidence,uncertain,not sure,should I trust,how do I know,is this real,what is true"
+    }
+  },
+  "ethical": {
+    "description": "Moral conflict, right and wrong, harm, fairness, integrity, and ethical decision-making.",
+    "principles": [
+      "five_precepts",
+      "hiri_ottappa",
+      "noble_eightfold_path",
+      "ahimsa",
+      "cetana_3"
+    ],
+    "keywords": {
+      "th": "ผิดไหม,บาปไหม,ควรทำไหม,โกง,เอาเปรียบ,ยุติธรรม,ความรับผิดชอบ,เบียดเบียน,ทำร้าย,ศีลธรรม,ความดี,ผลประโยชน์,การโกหก,ความซื่อสัตย์,ใจเขาใจเรา,หน้าที่,สิทธิ,ผิดชอบชั่วดี,จรรยาบรรณ,เสียสละ,เห็นแก่ตัว,ละอายใจ,การให้อภัย,กฎหมาย,มโนธรรม,บังคับ,ล่วงละเมิด,บริสุทธิ์ใจ,คุ้มค่าไหม,มาตรฐาน,ฆ่า,ทำแท้ง,โทษประหาร,สัตว์,สิ่งแวดล้อม",
+      "en": "is it wrong,ethical,moral,fairness,harm,cheating,integrity,responsibility,justice,right or wrong,conscience,guilt,honesty,compassion,values,principles,exploitation,selfishness,sin,virtue,duty,consent,respect,dignity,cruelty,mercy,transparency,noble,standards,abortion,capital punishment,animal rights,environment,whistleblowing"
+    }
+  },
+  "emotional": {
+    "description": "Emotions, feelings, defilements, anger, fear, grief, desire, and mental suffering.",
+    "principles": [
+      "satipatthana_4",
+      "sampajanna_4",
+      "five_aggregates",
+      "nivarana_5",
+      "paticcasamuppada"
+    ],
+    "keywords": {
+      "th": "โกรธ,เกลียด,กลัว,เศร้า,เครียด,กังวล,แค้น,อยากได้,โลภ,หลง,อิจฉา,เสียใจ,น้อยใจ,เหงา,ทรมาน,อึดอัด,กดดัน,ร้อนรน,มีความสุข,ฟุ้งซ่าน,หงุดหงิด,สิ้นหวัง,ตื่นเต้น,ยึดติด,ปล่อยวางไม่ได้,พ่ายแพ้,คาดหวัง,ผิดหวัง,ขาดสติ,เบื่อ,ซึมเศร้า,ไม่อยากมีชีวิต,ทำร้ายตัวเอง,เจ็บปวดข้างใน,หมดแรง,อ่อนล้า,บาดแผลในใจ",
+      "en": "angry,fear,sad,anxious,greed,jealousy,frustrated,depressed,stress,hate,loneliness,desire,attachment,suffering,panic,resentment,hopeless,emotional,obsessed,regret,confusion,excitement,calm,vulnerable,irritated,desperate,joy,pain,clinging,reactive,depression,self-harm,trauma,grief,burnout,exhausted,empty inside,numb,broken"
+    }
+  },
+  "causal": {
+    "description": "Cause and effect, patterns, cycles, systems, consequences, and long-term impact.",
+    "principles": [
+      "four_noble_truths",
+      "paticcasamuppada",
+      "idappaccayata"
+    ],
+    "keywords": {
+      "th": "เพราะอะไร,ทำไมถึงเป็นแบบนี้,ผลที่ตามมา,ทางแก้,สาเหตุ,วงจร,ซ้ำซาก,อนาคต,แผนการ,ระบบ,เชื่อมโยง,กระทบ,จุดเริ่มต้น,บทเรียน,เปลี่ยนแปลง,ความเสี่ยง,ความไม่แน่นอน,วิธีการ,ตัวแปร,ผลลัพธ์,กรรม,วิบาก,เงื่อนไข,ปัจจัย,ยั่งยืน,ต้นเหตุ,ทางตัน,ทางออก,พัฒนา,ต่อเนื่อง,ติดอยู่,หลุดไม่ได้,วนเวียน",
+      "en": "why,cause,effect,consequence,result,pattern,cycle,root cause,system,logic chain,link,impact,outcome,risk,strategy,process,solution,origin,factor,evolution,change,uncertainty,sustainability,connection,trigger,feedback,complexity,direction,sequential,framework,stuck,trap,loop,deadlock,no way out"
+    }
+  },
+  "identity": {
+    "description": "Ego, self-image, pride, status, identity, recognition, and attachment to self.",
+    "principles": [
+      "anatta",
+      "five_aggregates",
+      "ten_defilements"
+    ],
+    "keywords": {
+      "th": "ฉัน,ตัวเรา,ศักดิ์ศรี,หน้าตา,ชื่อเสียง,ตำแหน่ง,เกียรติยศ,ยอมไม่ได้,ดูถูก,อวด,ฉลาดกว่า,สำคัญตัวผิด,ปมด้อย,ปมเด่น,ตัวกูของกู,ภาพลักษณ์,การยอมรับ,อัตตา,อีโก้,ยโส,ถือตัว,หน้าบาง,เสียหน้า,เอกลักษณ์,ตัวแม่,ตัวตึง,ความเป็นฉัน,แตกต่าง,จุดยืน,พื้นที่ส่วนตัว",
+      "en": "me,ego,reputation,status,dignity,self-importance,pride,identity,arrogance,inferiority,superiority,recognition,image,validation,self-centered,narcissism,defensiveness,personal space,my way,ownership,branding,self-worth,disrespect,humiliation,honor,role,persona,distinction,selfish,uniqueness"
+    }
+  },
+  "craving": {
+    "description": "Craving, desire, addiction, obsession, compulsion, and attachment to wanting.",
+    "principles": [
+      "tanha_3",
+      "upadana_4",
+      "four_noble_truths"
+    ],
+    "keywords": {
+      "th": "อยากได้,ต้องการ,ต้องมี,ขาดไม่ได้,เสพติด,โลภ,ตัณหา,ความอยาก,หิวกระหาย,โหยหา,หมกมุ่น,คลั่งไคล้,เพลิน,สนุกมาก,อยากลอง,หลงใหล,ยอมทำทุกอย่าง,กิเลส,ของมันต้องมี,อยากรวย,อยากดัง,ไม่รู้จักพอ,แย่งชิง,ปรารถนา,แรงผลักดัน,พยายามคว้า,สะสม,ตะกละ,หลงระเริง,ลุ่มหลง",
+      "en": "desire,craving,addiction,need,want,greed,obsession,passion,impulse,longing,lust,hunger,thirst,clinging,gratification,compulsion,temptation,urge,collection,consumption,ambition,pleasure,enthusiasm,materialism,excess,yearning,attachment,drive,FOMO,dopamine,instant gratification,scroll,binge,can't stop,just one more"
+    }
+  },
+  "social": {
+    "description": "Relationships, trust, loyalty, conflict, community, influence, and social pressure.",
+    "principles": [
+      "kalyanamitta",
+      "sappurisa_dhamma_7",
+      "brahmavihara_4"
+    ],
+    "keywords": {
+      "th": "แฟน,พ่อแม่,เพื่อน,เจ้านาย,ลูกน้อง,คนรัก,นินทา,ทรยศ,เชื่อใจ,นอกใจ,ทะเลาะ,ความสัมพันธ์,ครอบครัว,สังคม,การยอมรับ,อิทธิพล,คนหมู่มาก,กดดัน,การสื่อสาร,ปรับตัว,เข้าพวก,เพื่อนร่วมงาน,แบ่งแยก,สามัคคี,บริหารคน,ความคาดหวัง,คำนินทา,ชื่อเสียง,มิตรภาพ,ศัตรู,โซเชียลมีเดีย,บูลลี่,ถูกกีดกัน,ถูกรังแก,ไม่มีใครเข้าใจ",
+      "en": "relationship,trust,loyalty,betrayal,peer pressure,social status,influence,community,connection,interaction,conflict,communication,friendship,family,partnership,reputation,networking,collaboration,manipulation,approval,social circles,gossip,authority,public opinion,support,belonging,rivalry,loneliness,engagement,teamwork,social media,bullying,cancel culture,toxic,excluded,no one understands,ostracized"
+    }
+  },
+  "responsibility": {
+    "description": "Accountability, blame, duty, negligence, consequences, and moral obligation.",
+    "principles": [
+      "karma",
+      "hiri_ottappa",
+      "cetana_3",
+      "gratitude"
+    ],
+    "keywords": {
+      "th": "ใครผิด,ความรับผิดชอบ,ข้ออ้าง,แก้ตัว,ยอมรับผิด,ชดใช้,ผลตามมา,หน้าที่,การตัดสินใจ,ผลกระทบ,ทางอ้อม,ตั้งใจ,พลาด,ประมาท,ความผิดพลาด,การชี้แจง,ความโปร่งใส,สำนึกผิด,การเยียวยา,ภาระ,พันธะ,ข้อตกลง,คำมั่นสัญญา,การละเลย,ละทิ้ง,ดูแล,ปกป้อง,เสียหาย,ยุติธรรม,ตรวจสอบได้",
+      "en": "accountability,responsibility,justification,blame,guilt,excuse,consequence,duty,integrity,indirect harm,intent,negligence,mistake,correction,compensation,obligation,promise,reliability,stewardship,role,impact,ownership,regret,transparency,justice,remedy,penalty,liability,action,burden"
+    }
+  },
+  "meditative": {
+    "description": "Meditation, mindfulness, concentration, mental training, stillness, and inner peace.",
+    "principles": [
+      "satipatthana_4",
+      "nivarana_5",
+      "samadhi",
+      "samapatti_8"
+    ],
+    "keywords": {
+      "th": "ฟุ้งซ่าน,นั่งสมาธิ,ใจลอย,ไม่มีสมาธิ,ความสงบ,ดูลมหายใจ,สติ,ฝึกจิต,นิ่ง,วอกแวก,ความคิดวน,จดจ่อ,ตื่นรู้,รู้ตัว,ปฏิบัติธรรม,วิปัสสนา,จิตตก,ควบคุมอารมณ์,สงบระงับ,ปล่อยวางความคิด,เพ่ง,ง่วงนอน,สงสัยในธรรม,ปราโมทย์,ปิติ,เอกัคคตา,ความว่าง,ผ่อนคลาย,สันติ,การภาวนา,นอนไม่หลับ,จิตใจวุ่นวาย,ความคิดไม่หยุด",
+      "en": "meditate,focus,mindfulness,concentration,peace of mind,calm,distracted,wandering mind,stillness,breathwork,awareness,mental training,serenity,quiet,overthinking,presence,deep breathing,insight,spiritual practice,trance,absorption,clarity,inner peace,tranquility,mental discipline,non-reactive,contemplation,zen,centered,equanimity,insomnia,racing thoughts,grounded,can't quiet my mind"
+    }
+  },
+  "refuge": {
+    "description": "Refuge, Triple Gem, faith, devotion, spiritual commitment, and religious tradition.",
+    "principles": [
+      "tisarana",
+      "kalyanamitta",
+      "ariya_dhana_7"
+    ],
+    "keywords": {
+      "th": "ที่พึ่ง,พระรัตนตรัย,พระพุทธเจ้า,พระธรรม,พระสงฆ์,คำสอน,วัด,ศาสนา,ศรัทธา,ความเชื่อมั่น,สรณะ,การกราบไหว้,บวช,ทำบุญ,รักษาศีล,ปฏิญาณ,ปฏิบัติบูชา,คำสั่งสอน,สถาบัน,ครูบาอาจารย์,กัลยาณมิตร,ความเลื่อมใส,มงคลชีวิต,การถวาย,ประเพณี,เนื้อนาบุญ,จรรโลงศาสนา,สืบทอด,เผยแผ่,ความเคารพ",
+      "en": "refuge,triple gem,buddha,dhamma,sangha,commitment,faith,devotion,belief,monk,temple,tradition,guidance,teaching,protection,support,dedication,ritual,spiritual path,compass,mentor,community,trust in dhamma,vow,pilgrimage,blessing,scripture,lineage,sanctuary,worship"
+    }
+  },
+  "awakening": {
+    "description": "Enlightenment, liberation, nirvana, ultimate truth, wisdom, and freedom from suffering.",
+    "principles": [
+      "bodhi",
+      "nibbana",
+      "lokuttara_dhamma_9",
+      "four_noble_truths",
+      "amata"
+    ],
+    "keywords": {
+      "th": "พ้นทุกข์,ตื่นรู้,บรรลุ,นิพพาน,ปัญญา,เข้าใจโลก,ความว่าง,หลุดพ้น,จบสิ้น,อริยสัจ,ความดับทุกข์,เป้าหมายสูงสุด,ความจริงแท้,หมดกิเลส,อิสรภาพทางใจ,โพธิ,ความรู้แจ้ง,วิมุตติ,กระจ่าง,สว่างไสว,เหนือโลก,ไม่กลับมาเกิด,การปล่อยวางขั้นสุด,ความสะอาด,ความบริสุทธิ์,อมตธรรม,สิ้นสงสัย,เบิกบาน,ญาณทัศนะ,แสงสว่าง,ชีวิตมีความหมายไหม,เกิดมาทำไม,ทุกอย่างไร้ความหมาย",
+      "en": "awakening,enlightenment,nirvana,liberation,ultimate goal,realization,wisdom,freedom from suffering,end of cycle,truth,profound,transcendent,pure,emptiness,fullness,radiant,consciousness,transformation,awakening mind,final release,insight,beyond ego,absolute,clarity,cessation,eternal,supreme,non-duality,spiritual goal,fulfillment,meaning of life,what is the point,existential,why am I here,nothing matters,purpose of existence"
+    }
+  },
+  "crisis": {
+    "description": "Immediate psychological crisis, suicidal ideation, self-harm, and urgent mental health emergency requiring priority response before philosophical reasoning.",
+    "principles": [
+      "ahimsa",
+      "brahmavihara_4",
+      "hiri_ottappa"
+    ],
+    "keywords": {
+      "th": "อยากตาย,ไม่อยากมีชีวิตอยู่,คิดจะฆ่าตัวตาย,ทำร้ายตัวเอง,กรีดข้อมือ,กินยาเกินขนาด,หมดเหตุผลที่จะอยู่,ทนไม่ไหวแล้ว,สิ้นหวังมาก,อยากหายไป,ไม่มีคนรัก,ไม่มีใครสนใจ,โลกไม่ต้องการฉัน,ฉันไม่มีคุณค่า,ทุกคนดีขึ้นถ้าไม่มีฉัน,วางแผนจะทำร้ายตัวเอง,จะจบชีวิต,ลาก่อนทุกคน,ไม่มีทางออก,เจ็บปวดมากเกินไป,หยุดความเจ็บปวดไม่ได้",
+      "en": "want to die,don't want to live,suicidal,kill myself,end my life,self-harm,cut myself,overdose,no reason to live,can't take it anymore,hopeless,want to disappear,no one cares,no one loves me,worthless,burden to everyone,better off without me,planning to hurt myself,goodbye,no way out,too much pain,can't stop the pain,thinking about suicide,don't want to be here anymore,everyone would be better off,I give up on life"
+    },
+    "priority": "CRITICAL",
+    "response_mode": "crisis_first",
+    "note": "Do not engage in philosophical reasoning first. Acknowledge pain immediately, provide crisis resources, and encourage connection with a trusted person or professional."
+  }
+}
