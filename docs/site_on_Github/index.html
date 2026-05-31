@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhamma AI | Ethical Reasoning</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/darkmode.css">
+</head>
+<body>
+
+  <!-- DEV BANNER -->
+  <div class="dev-banner" id="dev-banner" style="display:none">⚙ DEV MODE</div>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-left">
+      <img src="Chakra.svg" class="header-logo" alt="">
+      <span class="header-title" id="header-title">Dhamma AI Network</span>
+    </div>
+    <div class="header-right">
+      <button class="header-btn" id="btn-login" style="display:none">Login</button>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-th" onclick="setLang('th')">TH</button>
+      </div>
+      <button class="header-btn" id="btn-darkmode" onclick="toggleDark()">Dark</button>
+    </div>
+  </header>
+
+  <!-- DEV PANEL -->
+  <div class="dev-panel" id="dev-panel" style="display:none">
+    <div class="dev-panel-title">Debug</div>
+    <div id="dev-provider">provider: —</div>
+    <div id="dev-model">model: —</div>
+    <div id="dev-tokens">tokens: —</div>
+    <div id="dev-latency">latency: —</div>
+    <div id="dev-parse">parse: —</div>
+    <div id="dev-cache">cache: —</div>
+    <div id="dev-principles">principles: —</div>
+    <div style="margin-top:8px;">
+      <label style="font-size:0.65rem;color:#8a7a60;text-transform:uppercase;letter-spacing:0.08em;">Provider</label>
+      <select id="dev-provider-select" style="display:block;margin-top:4px;background:#2a2218;color:#c8b890;border:1px solid #5a4a30;border-radius:4px;padding:3px 6px;font-size:0.72rem;width:100%;">
+        <option value="claude_haiku">Claude Haiku</option>
+        <option value="claude_sonnet">Claude Sonnet</option>
+        <option value="thaillm">ThaiLLM</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- APP LAYOUT -->
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <nav class="app-sidebar">
+      <div class="sidebar-items">
+        <button class="sidebar-item active" id="nav-home" onclick="showPage('home')" data-i18n="nav_home">Home</button>
+        <button class="sidebar-item" id="nav-ideology" onclick="showPage('ideology')" data-i18n="nav_ideology">Ideology</button>
+        <button class="sidebar-item" id="nav-project" onclick="showPage('project')" data-i18n="nav_project">Project</button>
+        <button class="sidebar-item" id="nav-principles" onclick="showPrinciples()" data-i18n="nav_principles">Principles</button>
+        <button class="sidebar-item" id="nav-about" onclick="showPage('about')" data-i18n="nav_about">About Us</button>
+      </div>
+      <div class="sidebar-footer">
+        <div class="sidebar-coming-soon">
+          <span id="nav-multiagent" data-i18n="nav_multiagent">Multi Agent
+System</span>
+          <span class="coming-soon-label" data-i18n="coming_soon">Coming soon</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="app-main">
+
+  <!-- SCREEN 1: LANDING -->
+  <section id="screen-landing" class="screen active">
+    <div style="text-align:center; margin-top: 24px;">
+      <h1 class="landing-headline" data-i18n="landing_headline">Stuck in a decision?<br>Let's think it through.</h1>
+    </div>
+    <p class="landing-sub" data-i18n="landing_sub">Not answers. Clearer thinking.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="showScreen('screen-input')" data-i18n="btn_start">Start a dilemma (Not on GitHub)</button>
+      <button class="btn btn-secondary" onclick="showScreen('screen-examples')" data-i18n="btn_example">Try an example</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: EXAMPLES -->
+  <section id="screen-examples" class="screen">
+    <button class="back-link" onclick="showScreen('screen-landing')" data-i18n="btn_back">← Back</button>
+    <div class="screen-title" data-i18n="examples_title">Choose a scenario</div>
+    <div class="example-cards" id="example-cards-container"></div>
+  </section>
+
+  <!-- SCREEN 3: INPUT -->
+  <section id="screen-input" class="screen">
+    <button class="back-link" onclick="showScreen('screen-landing')" data-i18n="btn_back">← Back</button>
+    <h2 class="input-title" data-i18n="input_title">What are you deciding between?</h2>
+    <div class="field">
+      <label data-i18n="label_a">Option A</label>
+      <div class="input-wrap">
+        <textarea id="input-a" rows="3" oninput="updateClearBtn(this)"></textarea>
+        <button class="clear-btn" onclick="clearField('input-a')" style="display:none" tabindex="-1">×</button>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="label_b">Option B</label>
+      <div class="input-wrap">
+        <textarea id="input-b" rows="3" oninput="updateClearBtn(this)"></textarea>
+        <button class="clear-btn" onclick="clearField('input-b')" style="display:none" tabindex="-1">×</button>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="label_context">Context (optional)</label>
+      <div class="input-wrap">
+        <textarea id="input-context" rows="2" oninput="updateClearBtn(this)"></textarea>
+        <button class="clear-btn" onclick="clearField('input-context')" style="display:none" tabindex="-1">×</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="runAnalysis()" data-i18n="btn_analyze">Analyze</button>
+  </section>
+
+  <!-- SCREEN 4: THINKING -->
+  <section id="screen-thinking" class="screen">
+    <div class="thinking-center">
+      <div class="pulse-ring"></div>
+      <p class="thinking-text" data-i18n="thinking_text">Analyzing intention, impact, and truth...</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: RESULT -->
+  <section id="screen-result" class="screen">
+    <button class="back-link" onclick="showScreen('screen-input')" data-i18n="btn_back">← Back</button>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:0.78rem; font-family:sans-serif; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);" data-i18n="result_heading">Analysis</div>
+      <div id="result-confidence"></div>
+    </div>
+
+    <!-- Not meaningful dilemma -->
+    <div id="result-not-dilemma" class="not-dilemma-box" style="display:none;">
+      <p class="not-dilemma-msg" id="not-dilemma-msg"></p>
+    </div>
+
+    <!-- Full analysis -->
+    <div id="result-full" style="display:none;">
+      <div style="display:flex; flex-direction:column; gap:32px;">
+
+        <div class="result-section">
+          <div class="result-section-title" data-i18n="res_summary">Situation Summary</div>
+          <p class="result-summary" id="result-summary"></p>
+        </div>
+
+        <!-- Detected bias -->
+        <div id="bias-section" class="result-section" style="display:none;">
+          <div class="result-section-title" data-i18n="res_bias">Detected Bias</div>
+          <div class="tags-row" id="result-bias"></div>
+        </div>
+
+        <div class="options-grid">
+          <div class="option-card">
+            <div class="option-label" data-i18n="label_a">Option A</div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_intention">Intention</div><div class="option-row-text" id="res-a-intention"></div></div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_harm">Possible harm</div><div class="option-row-text" id="res-a-harm"></div></div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_tradeoffs">Trade-offs</div><div class="option-row-text" id="res-a-tradeoffs"></div></div>
+          </div>
+          <div class="option-card">
+            <div class="option-label" data-i18n="label_b">Option B</div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_intention">Intention</div><div class="option-row-text" id="res-b-intention"></div></div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_harm">Possible harm</div><div class="option-row-text" id="res-b-harm"></div></div>
+            <div class="option-row"><div class="option-row-label" data-i18n="res_tradeoffs">Trade-offs</div><div class="option-row-text" id="res-b-tradeoffs"></div></div>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title" data-i18n="res_perspective">Perspective</div>
+          <div class="perspective-list" id="result-perspective"></div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title" data-i18n="res_recommendation">Recommendation</div>
+          <p class="recommendation-text" id="result-recommendation"></p>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title" data-i18n="res_principles">Principles Used</div>
+          <div style="font-size:0.72rem;font-family:sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Base Operating Principles</div>
+          <div class="tags-row" id="result-base-tags"></div>
+          <div style="font-size:0.72rem;font-family:sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin:12px 0 6px;">Contextual Principles</div>
+          <div class="tags-row" id="result-tags"></div>
+          <div id="result-hashes"></div>
+          <div id="sub-principles-section" style="display:none; margin-top:14px;">
+            <div style="font-size:0.72rem;font-family:sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Sub-principles mentioned</div>
+            <div id="result-sub-principles" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Follow-up -->
+        <div class="fu-section" id="fu-section" style="display:none;">
+          <!-- header -->
+          <div class="fu-header">
+            <span class="fu-header-label" data-i18n="fu_label">Continue thinking</span>
+            <span class="fu-quota" id="fu-quota"></span>
+          </div>
+          <!-- context summary (hidden) -->
+          <div class="fu-context" style="display:none;">
+            <div class="fu-context-summary" id="fu-context-summary"></div>
+            <div class="fu-context-tradeoff"><strong data-i18n="fu_tradeoff_label">Key trade-off:</strong> <span id="fu-context-tradeoff"></span></div>
+          </div>
+          <!-- quick chips -->
+          <div class="fu-chips" id="fu-chips"></div>
+          <!-- input -->
+          <div class="fu-input-area">
+            <textarea class="fu-input" id="fu-input" rows="1" data-i18n-placeholder="fu_placeholder"></textarea>
+            <button class="fu-send" id="fu-send-btn" onclick="sendFollowUp()">→</button>
+          </div>
+          <!-- answer -->
+          <div class="fu-answer" id="fu-answer">
+            <div class="fu-answer-text" id="fu-answer-text"></div>
+            <div class="fu-answer-rec" id="fu-answer-rec"></div>
+          </div>
+          <!-- quota exhausted -->
+          <div class="fu-exhausted" id="fu-exhausted" style="display:none;">
+            <div class="fu-exhausted-msg" data-i18n="fu_exhausted_msg">You've used your follow-up for this analysis.</div>
+            <button class="fu-upgrade-btn" data-i18n="fu_upgrade_btn">Upgrade to Supporter →</button>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <p class="reflection-prompt" data-i18n="reflection_prompt">Does this change how you see it?</p>
+        <div class="reflection-btns">
+          <button class="btn-reflect" onclick="recordReflection('yes')" data-i18n="reflect_yes">Yes, it helps</button>
+          <button class="btn-reflect" onclick="recordReflection('no')" data-i18n="reflect_no">Not really</button>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="followup-btns">
+          <button class="btn btn-primary" onclick="showScreen('screen-input')" data-i18n="btn_another">Try another dilemma</button>
+          <button class="btn btn-secondary" onclick="showScreen('screen-examples')" data-i18n="btn_example">See examples</button>
+        </div>
+
+        <!-- DEV debug section (hidden for normal users) -->
+        <details class="dev-section" id="dev-result-section" style="display:none">
+          <summary>Debug Info (dev only)</summary>
+          <div class="dev-section-body" id="dev-result-body"></div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 6: PRINCIPLES EXPLORER -->
+  <section id="screen-principles" class="screen">
+    <button class="back-link" onclick="showScreen('screen-landing')" data-i18n="btn_back">← Back</button>
+
+    <div>
+      <div style="font-size:0.78rem; font-family:sans-serif; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:4px;" data-i18n="explorer_label">Principles Explorer</div>
+      <h2 style="font-size:1.4rem; font-weight:normal; color:var(--gold-light);" data-i18n="explorer_title">How the AI thinks</h2>
+      <p style="color:var(--muted); font-size:0.9rem; margin-top:6px;" data-i18n="explorer_sub">Each principle has a role: some prevent harm, some analyze causes, some detect bias, and some bring balance.</p>
+    </div>
+
+    <div class="principles-layout">
+      <!-- Sidebar: search + filter -->
+      <aside class="principles-sidebar">
+        <h2 data-i18n="explorer_title2">Principles</h2>
+        <p data-i18n="explorer_desc">Reasoning modules the AI selects and applies.</p>
+        <div class="cat-grid" id="cat-grid"></div>
+      </aside>
+
+      <!-- Main: cards + detail -->
+      <div>
+        <div class="principles-count" id="principles-count"></div>
+        <div style="display:grid; grid-template-columns:1fr 380px; gap:16px; align-items:start;">
+          <div class="principles-grid" id="principles-grid"></div>
+          <div id="principle-detail-panel"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 7: IDEOLOGY -->
+  <section id="screen-ideology" class="screen screen-page"></section>
+
+  <!-- SCREEN 8: PROJECT -->
+  <section id="screen-project" class="screen screen-page"></section>
+
+  <!-- SCREEN 9: ABOUT -->
+  <section id="screen-about" class="screen screen-page"></section>
+
+    </main>
+  </div><!-- /.app-layout -->
+
+  <script>
+    // ── i18n ──
+    const T = {
+      en: {
+        nav_home: "Home", nav_ideology: "Ideology", nav_project: "Project", nav_principles: "Principles", nav_about: "About Us",
+        nav_multiagent: "Multi Agent\nSystem", coming_soon: "Coming soon",
+        landing_headline: "Stuck in a decision?<br>Let's think it through.",
+        landing_sub: "Not answers. Clearer thinking.",
+        btn_start: "Start a dilemma", btn_example: "Try an example",
+        btn_back: "← Back", btn_analyze: "Analyze",
+        btn_another: "Try another dilemma",
+        examples_title: "Choose a scenario",
+        input_title: "What are you deciding between?",
+        label_a: "Option A", label_b: "Option B",
+        label_context: "Context (optional)",
+        placeholder_a: "Describe the first path...",
+        placeholder_b: "Describe the second path...",
+        placeholder_context: "Any background that matters...",
+        thinking_text: "Analyzing intention, impact, and truth...",
+        result_heading: "Analysis",
+        res_summary: "Situation Summary",
+        res_bias: "Detected Bias",
+        res_intention: "Intention", res_harm: "Possible harm", res_tradeoffs: "Trade-offs",
+        res_perspective: "Perspective", res_recommendation: "Recommendation",
+        res_principles: "Principles Used",
+        res_followup: "Follow-up Questions",
+        followup_placeholder: "Ask a follow-up question...",
+        followup_send: "Ask",
+        reflection_prompt: "Does this change how you see it?",
+        reflect_yes: "Yes, it helps", reflect_no: "Not really",
+        daily_label: "Today's Principle",
+        alert_fill: "Please describe both options.",
+        alert_error: "Something went wrong. Please try again.",
+        fu_label: "Continue thinking",
+        fu_tradeoff_label: "Key trade-off:",
+        fu_placeholder: "Ask a follow-up about this situation...",
+        fu_quota_free: "1 follow-up remaining",
+        fu_quota_used: "Follow-up used",
+        fu_quota_supporter: "follow-ups remaining",
+        fu_exhausted_msg: "You've used your follow-up for this analysis.",
+        fu_upgrade_btn: "Upgrade to Supporter →",
+        fu_chips: ["Continue thinking...", "Challenge this reasoning", "Explore another angle"],
+        explorer_label: "Principles Explorer",
+        explorer_title: "How the AI thinks",
+        explorer_title2: "Principles",
+        explorer_desc: "Reasoning modules the AI selects and applies.",
+        explorer_sub: "Each principle has a role: some prevent harm, some analyze causes, some detect bias, and some bring balance.",
+        search_placeholder: "Search stress, truth, trust...",
+        pd_what: "What it does", pd_when: "Used when", pd_how: "How the AI uses this",
+        pd_example: "Example", pd_try: "Try with this principle"
+      },
+      th: {
+        nav_home: "หน้าแรก", nav_ideology: "อุดมการณ์", nav_project: "โครงการ", nav_principles: "หลักธรรม", nav_about: "เกี่ยวกับเรา",
+        nav_multiagent: "Multi Agent\nSystem", coming_soon: "เร็วๆ นี้",
+        landing_headline: "ลังเลอยู่ใช่ไหม?<br>มาคิดด้วยกัน",
+        landing_sub: "ไม่ใช่คำตอบ แต่เป็นความชัดเจน",
+        btn_start: "เริ่มตั้งคำถาม", btn_example: "ลองตัวอย่าง",
+        btn_back: "← กลับ", btn_analyze: "วิเคราะห์",
+        btn_another: "ลองสถานการณ์อื่น",
+        examples_title: "เลือกสถานการณ์",
+        input_title: "คุณกำลังตัดสินใจระหว่างอะไร?",
+        label_a: "ตัวเลือก A", label_b: "ตัวเลือก B",
+        label_context: "บริบท (ถ้ามี)",
+        placeholder_a: "อธิบายทางเลือกแรก...",
+        placeholder_b: "อธิบายทางเลือกที่สอง...",
+        placeholder_context: "บริบทหรือข้อมูลที่เกี่ยวข้อง...",
+        thinking_text: "กำลังวิเคราะห์เจตนา ผลกระทบ และความจริง...",
+        result_heading: "การวิเคราะห์",
+        res_summary: "สรุปสถานการณ์",
+        res_bias: "อคติที่ตรวจพบ",
+        res_intention: "เจตนา", res_harm: "ผลเสียที่อาจเกิดขึ้น", res_tradeoffs: "สิ่งที่ได้และเสีย",
+        res_perspective: "มุมมอง", res_recommendation: "ข้อเสนอแนะ",
+        res_principles: "หลักธรรมที่ใช้",
+        res_followup: "คำถามเพิ่มเติม",
+        followup_placeholder: "ถามคำถามต่อเนื่อง...",
+        followup_send: "ถาม",
+        reflection_prompt: "สิ่งนี้เปลี่ยนมุมมองของคุณไหม?",
+        reflect_yes: "ใช่ ช่วยได้มาก", reflect_no: "ยังไม่แน่ใจ",
+        daily_label: "หลักธรรมวันนี้",
+        alert_fill: "กรุณาระบุทั้งสองตัวเลือก",
+        alert_error: "เกิดข้อผิดพลาด กรุณาลองใหม่",
+        fu_label: "คิดต่อ",
+        fu_tradeoff_label: "ประเด็นสำคัญ:",
+        fu_placeholder: "ถามต่อเนื่องเกี่ยวกับสถานการณ์นี้...",
+        fu_quota_free: "เหลือ 1 คำถาม",
+        fu_quota_used: "ใช้คำถามครบแล้ว",
+        fu_quota_supporter: "คำถามที่เหลือ",
+        fu_exhausted_msg: "คุณใช้คำถามต่อเนื่องครบแล้วสำหรับการวิเคราะห์นี้",
+        fu_upgrade_btn: "อัพเกรดเป็น Supporter →",
+        fu_chips: ["คิดต่อ...", "ท้าทายการวิเคราะห์นี้", "มองมุมอื่น"],
+        explorer_label: "สำรวจหลักธรรม",
+        explorer_title: "วิธีที่ AI คิด",
+        explorer_title2: "หลักธรรม",
+        explorer_desc: "โมดูลการใช้เหตุผลที่ AI เลือกใช้",
+        explorer_sub: "แต่ละหลักธรรมมีบทบาท: บางข้อป้องกันอันตราย บางข้อวิเคราะห์เหตุปัจจัย บางข้อตรวจจับอคติ",
+        search_placeholder: "ค้นหา ความเครียด ความจริง ความไว้ใจ...",
+        pd_what: "ทำอะไร", pd_when: "ใช้เมื่อ", pd_how: "AI ใช้อย่างไร",
+        pd_example: "ตัวอย่าง", pd_try: "ลองใช้หลักนี้",
+        examples: [
+          { label: "ความจริง vs ความเมตตา", a: "พูดความจริงแม้จะทำให้คนที่รักเจ็บปวด", b: "เงียบเพื่อปกป้องความรู้สึกของเขา", q: '"ควรพูดความจริงทั้งที่อาจทำให้คนที่รักเจ็บปวดไหม?"' },
+          { label: "ความโกรธ", a: "ตอบสนองทันทีขณะที่ยังโกรธ", b: "รอจนใจเย็นแล้วค่อยตอบ", q: '"โกรธอยู่ ควรตอบเลยหรือรอก่อน?"' },
+          { label: "เงิน vs ความหมาย", a: "รับงานเงินดีแต่ไม่ชอบ", b: "รับงานเงินน้อยกว่าแต่ตรงกับคุณค่าของตัวเอง", q: '"งานเงินดีแต่ไม่รัก หรืองานที่รักแต่เงินน้อย?"' }
+        ]
+      }
+    };
+
+    let currentLang = 'en';
+    let currentSessionId = null;
+    let followupRemaining = 0;
+    let followupMax = 0;
+    let currentTier = 'free';
+    let allPrinciples = [];
+    let selectedCategory = 'All';
+    let selectedPrincipleHash = null;
+    let devMode = false;
+    let currentInput = {};
+    let examplesData = null;
+    let isExampleMode = false;
+
+    const CATEGORIES = ['All', 'Ethics', 'Mind', 'Thinking', 'Insight', 'Human'];
+
+    // ── i18n ──
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById('html-root').lang = lang;
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-th').classList.toggle('active', lang === 'th');
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (T[lang][key]) el.placeholder = T[lang][key];
+      });
+
+      document.getElementById('input-a').placeholder = T[lang].placeholder_a;
+      document.getElementById('input-b').placeholder = T[lang].placeholder_b;
+      document.getElementById('input-context').placeholder = T[lang].placeholder_context;
+
+      renderExampleCards();
+      if (allPrinciples.length > 0) renderPrinciplesGrid();
+      rerenderOpenPage();
+    }
+
+    // ── Screen nav ──
+    function showScreen(id) {
+      if (isExampleMode && id === 'screen-input') {
+        isExampleMode = false;
+        ['input-a','input-b','input-context'].forEach(elId => document.getElementById(elId).disabled = false);
+      }
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (id === 'screen-examples') renderExampleCards();
+      setSidebarActive(id === 'screen-principles' ? 'nav-principles' : id === 'screen-landing' ? 'nav-home' : null);
+      window.scrollTo(0, 0);
+    }
+
+    function setSidebarActive(navId) {
+      document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+      if (navId) { const el = document.getElementById(navId); if (el) el.classList.add('active'); }
+    }
+
+    function showPage(pageId) {
+      if (pageId === 'home') { showScreen('screen-landing'); return; }
+      if (pageId === 'principles') { showPrinciples(); return; }
+      const screenId = 'screen-' + pageId;
+      const screen = document.getElementById(screenId);
+      if (!screen) return;
+      showScreen(screenId);
+      setSidebarActive('nav-' + pageId);
+      if (!screen.dataset.rendered) renderPage(pageId, screen);
+    }
+
+    const pageCache = {};
+
+    async function renderPage(pageId, screen) {
+      screen.dataset.rendered = '1';
+      let data = pageCache[pageId];
+      if (!data) {
+        try {
+          const res = await fetch('/' + pageId + '.json');
+          data = await res.json();
+          pageCache[pageId] = data;
+        } catch (_) {
+          screen.innerHTML = '<p style="color:var(--muted);padding:40px 0;">Failed to load page.</p>';
+          screen.dataset.rendered = '';
+          return;
+        }
+      }
+      const root = data[pageId];
+      if (!root) return;
+      const items = [];
+      Object.values(root).forEach(v => {
+        if (Array.isArray(v)) {
+          v.forEach(item => { if (item && typeof item === 'object' && item.display_order) items.push(item); });
+        } else if (v && typeof v === 'object' && v.display_order) {
+          items.push(v);
+        }
+      });
+      items.sort((a, b) => a.display_order - b.display_order);
+      screen.innerHTML = items.map(s => renderSection(s, currentLang)).join('');
+    }
+
+    function rerenderOpenPage() {
+      ['ideology','project','about'].forEach(pageId => {
+        const screen = document.getElementById('screen-' + pageId);
+        if (!screen) return;
+        screen.dataset.rendered = '';
+        if (screen.classList.contains('active')) renderPage(pageId, screen);
+      });
+    }
+
+    function t(obj) {
+      if (!obj) return '';
+      return obj[currentLang] || obj.en || '';
+    }
+
+    function renderSection(s, lang) {
+      if (s.type === 'hero_text') return renderHero(s);
+      if (s.type === 'text_section') return renderTextSection(s);
+      if (s.type === 'feature_grid') return renderFeatureGrid(s);
+      if (s.type === 'research_grid') return renderResearchGrid(s);
+      if (s.type === 'layer_stack') return renderLayerStack(s);
+      if (s.type === 'image_section') return renderImageSection(s);
+      if (s.type === 'comparison') return renderComparison(s);
+      if (s.type === 'status_table') return renderStatusTable(s);
+      if (s.type === 'supporters') return renderSupporters(s);
+      return '';
+    }
+
+    function renderHero(s) {
+      let html = '';
+      if (s.title) html += `<div class="page-hero-title">${t(s.title)}</div>`;
+      html += `<h1 class="page-hero-heading">${t(s.heading)}</h1>`;
+      if (s.image) {
+        const st = s.image_style || {};
+        const style = [
+          st.max_width ? `max-width:${st.max_width}` : '',
+          st.border_radius ? `border-radius:${st.border_radius}` : '',
+          st.margin_top ? `margin-top:${st.margin_top}` : '',
+          st.margin_bottom ? `margin-bottom:${st.margin_bottom}` : '',
+        ].filter(Boolean).join(';');
+        html += `<img src="${s.image}" class="page-hero-image${st.shadow ? ' shadow' : ''}" style="${style}" alt="">`;
+      }
+      if (s.body) html += `<p class="page-hero-body">${t(s.body)}</p>`;
+      if (s.tags && s.tags.length) {
+        html += `<div class="page-tags">${s.tags.map(tag => `<span class="page-tag">${tag}</span>`).join('')}</div>`;
+      }
+      return `<div class="page-hero">${html}</div>`;
+    }
+
+    function renderTextSection(s) {
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><p class="page-section-body">${t(s.body)}</p></div>`;
+    }
+
+    function renderFeatureGrid(s) {
+      const items = (s.items || []).map(item =>
+        `<div class="feature-item"><div class="feature-item-title">${t(item.title)}</div><div class="feature-item-desc">${t(item.description)}</div></div>`
+      ).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="feature-grid">${items}</div></div>`;
+    }
+
+    function renderResearchGrid(s) {
+      const items = (s.items || []).map(item =>
+        `<div class="research-item"><div class="research-item-title">${t(item.title)}</div><div class="research-item-desc">${t(item.description)}</div></div>`
+      ).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="research-grid">${items}</div></div>`;
+    }
+
+    function renderLayerStack(s) {
+      const layers = (s.layers || []).map((layer, i) =>
+        `<div class="layer-item"><span class="layer-num">L${i+1}</span><div><div class="layer-title">${t(layer.title)}</div><div class="layer-desc">${t(layer.description)}</div></div></div>`
+      ).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="layer-stack">${layers}</div></div>`;
+    }
+
+    function renderImageSection(s) {
+      const st = s.image_style || {};
+      const style = [
+        st.max_width ? `max-width:${st.max_width}` : '',
+        st.border_radius ? `border-radius:${st.border_radius}` : '',
+      ].filter(Boolean).join(';');
+      const caption = s.caption ? `<div class="image-caption">${t(s.caption)}</div>` : '';
+      return `<div class="image-section"><div class="image-section-heading">${t(s.heading)}</div><p class="image-section-body">${t(s.body)}</p><img src="${s.image}" class="image-section-img${st.shadow ? ' shadow' : ''}" style="${style}" alt="">${caption}</div>`;
+    }
+
+    function renderComparison(s) {
+      const left = s.comparison ? t(s.comparison.left) : '';
+      const right = s.comparison ? t(s.comparison.right) : '';
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><p class="comparison-desc">${t(s.description)}</p><div class="comparison-grid"><div class="comparison-col"><div class="comparison-col-label">${left}</div></div><div class="comparison-col"><div class="comparison-col-label">${right}</div></div></div></div>`;
+    }
+
+    function renderStatusTable(s) {
+      const rows = (s.items || []).map(item =>
+        `<tr><td>${t(item.label)}</td><td>${item.value}</td></tr>`
+      ).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><table class="status-table">${rows}</table></div>`;
+    }
+
+    function renderSupporters(s) {
+      const items = (s.items || []).map(item => {
+        const logo = item.logo ? `<div class="supporter-logo"><a href="${item.website}" target="_blank" rel="noopener"><img src="${item.logo}" height="${item.logo_height || 20}" alt="${item.name}"></a></div>` : '';
+        return `<div class="supporter-item">${logo}<div class="supporter-info"><div class="supporter-name">${item.name}</div><div class="supporter-desc">${t(item.description)}</div></div></div>`;
+      }).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="supporters-list">${items}</div></div>`;
+    }
+
+    async function showPrinciples() {
+      showScreen('screen-principles');
+      setSidebarActive('nav-principles');
+      if (allPrinciples.length === 0) await loadPrinciplesData();
+    }
+
+    async function loadPrinciplesData() {
+      try {
+        const res = await fetch('/principles');
+        const data = await res.json();
+        allPrinciples = data.principles;
+        buildCatGrid();
+        renderPrinciplesGrid();
+        if (allPrinciples.length > 0) showPrincipleDetail(allPrinciples[0]);
+      } catch (_) {}
+    }
+
+    function buildCatGrid() {
+      const grid = document.getElementById('cat-grid');
+      grid.innerHTML = '';
+      CATEGORIES.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-btn' + (cat === selectedCategory ? ' active' : '');
+        btn.textContent = cat;
+        btn.onclick = () => { selectedCategory = cat; buildCatGrid(); renderPrinciplesGrid(); };
+        grid.appendChild(btn);
+      });
+    }
+
+    function renderPrinciplesGrid() {
+      const filtered = allPrinciples.filter(p =>
+        selectedCategory === 'All' || p.category === selectedCategory
+      );
+
+      document.getElementById('principles-count').textContent = `${filtered.length} shown`;
+
+      const grid = document.getElementById('principles-grid');
+      grid.innerHTML = '';
+      filtered.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'principle-card' + (p.hash === selectedPrincipleHash ? ' selected' : '');
+        btn.onclick = () => showPrincipleDetail(p);
+        btn.innerHTML = `
+          <div class="pc-category">${p.category || ''}</div>
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-thai">${p.thai}</div>
+          <span class="pc-role">${p.role}</span>
+          <div class="pc-desc">${p.prompt_injection || ''}</div>
+          <div class="pc-tags">${(p.tags || []).slice(0,3).map(t => `<span class="pc-tag">${t}</span>`).join('')}</div>`;
+        grid.appendChild(btn);
+      });
+    }
+
+    function showPrincipleDetail(p) {
+      selectedPrincipleHash = p.hash;
+      renderPrinciplesGrid();
+      const t = T[currentLang];
+      const panel = document.getElementById('principle-detail-panel');
+      const usedWhen = (p.used_when || []).map(u => `<li>${u}</li>`).join('');
+      panel.innerHTML = `
+        <div class="principle-detail">
+          <div class="pd-header">
+            <div>
+              <div style="font-size:0.7rem; font-family:sans-serif; text-transform:uppercase; color:var(--muted); letter-spacing:0.08em;">${p.category || ''}</div>
+              <div style="font-size:1.3rem; color:var(--gold-light); margin:4px 0;">${p.name}</div>
+              <div style="font-size:0.85rem; color:var(--muted);">${p.thai}</div>
+            </div>
+            <span class="pd-role-badge">${p.role}</span>
+          </div>
+          <div class="pd-section">
+            <div class="pd-section-title">${t.pd_what}</div>
+            <div class="pd-section-text">${p.prompt_injection || ''}</div>
+          </div>
+          ${usedWhen ? `<div class="pd-section"><div class="pd-section-title">${t.pd_when}</div><ul>${usedWhen}</ul></div>` : ''}
+          ${p.example ? `
+          <div class="pd-section">
+            <div class="pd-section-title">${t.pd_example}</div>
+            <div class="pd-section-text" style="font-style:italic;">"${p.example}"</div>
+          </div>` : ''}
+          <div class="pd-hash">${p.hash}</div>
+        </div>`;
+    }
+
+    // ── Examples ──
+    function renderExampleCards() {
+      const container = document.getElementById('example-cards-container');
+      container.innerHTML = '';
+      if (!examplesData) return;
+      examplesData.forEach(group => {
+        const ex = group.examples.find(e => e.language === currentLang) || group.examples[0];
+        if (!ex) return;
+        const btn = document.createElement('button');
+        btn.className = 'example-card';
+        btn.onclick = () => loadExample(ex);
+        const display = ex.question || `${ex.optionA} / ${ex.optionB}`;
+        btn.innerHTML = `<div class="ex-label">${ex.title}</div>${display}`;
+        container.appendChild(btn);
+      });
+    }
+
+    function loadExample(exObj) {
+      isExampleMode = true;
+      currentInput = { optionA: exObj.optionA, optionB: exObj.optionB, context: exObj.context || '' };
+      document.getElementById('input-a').value = exObj.optionA;
+      document.getElementById('input-b').value = exObj.optionB;
+      document.getElementById('input-context').value = exObj.context || '';
+      ['input-a','input-b','input-context'].forEach(id => document.getElementById(id).disabled = true);
+      currentSessionId = null;
+      const pr = exObj.precomputed_result;
+      const adapted = {
+        ...pr,
+        selected_principles: (pr.principle_reasons || []).map(r => ({ id: r.principle_id, name: r.principle_id, hash: '' })),
+        base_principles: [],
+        followup_remaining: 0,
+        followup_max: 0,
+        tier: 'free',
+        provider_used: exObj.provider || '',
+        model_used: exObj.model || '',
+        token_usage: exObj.token_usage || {},
+      };
+      renderResult(adapted);
+      showScreen('screen-result');
+    }
+
+    async function loadExamplesData() {
+      try {
+        const res = await fetch('/examples');
+        examplesData = await res.json();
+        renderExampleCards();
+      } catch (_) {}
+    }
+
+    // ── Analysis ──
+    async function runAnalysis() {
+      const t = T[currentLang];
+      const optionA = document.getElementById('input-a').value.trim();
+      const optionB = document.getElementById('input-b').value.trim();
+      const context = document.getElementById('input-context').value.trim();
+      if (!optionA || !optionB) { alert(t.alert_fill); return; }
+
+      currentInput = { optionA, optionB, context };
+      showScreen('screen-thinking');
+
+      let _analyzeRes = null;
+      try {
+        const requestedProvider = devMode
+          ? (document.getElementById('dev-provider-select')?.value || undefined)
+          : undefined;
+        _analyzeRes = await fetch('/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ optionA, optionB, context, requestedProvider })
+        });
+        if (!_analyzeRes.ok) {
+          const errBody = await _analyzeRes.json().catch(() => ({}));
+          throw new Error(errBody.detail || errBody.error || 'failed');
+        }
+        const data = await _analyzeRes.json();
+        currentSessionId = data.sessionId || null;
+        renderResult(data);
+        showScreen('screen-result');
+      } catch (err) {
+        showScreen('screen-input');
+        if (devMode) {
+          alert(`[DEV] Analysis failed:\n${err.message}`);
+        } else {
+          alert(T[currentLang].alert_error);
+        }
+      }
+    }
+
+    function renderResult(data) {
+      const t = T[currentLang];
+
+      // Confidence badge
+      const confEl = document.getElementById('result-confidence');
+      if (data.confidence) {
+        const cls = { high: 'conf-high', medium: 'conf-medium', low: 'conf-low' }[data.confidence] || 'conf-medium';
+        confEl.innerHTML = `<span class="confidence-badge ${cls}">${data.confidence}</span>`;
+      } else { confEl.innerHTML = ''; }
+
+      // Not meaningful dilemma
+      const notDilemma = document.getElementById('result-not-dilemma');
+      const fullResult = document.getElementById('result-full');
+      if (data.is_meaningful_dilemma === false) {
+        notDilemma.style.display = 'block';
+        fullResult.style.display = 'none';
+        document.getElementById('not-dilemma-msg').textContent = data.message || '';
+        return;
+      }
+      notDilemma.style.display = 'none';
+      fullResult.style.display = 'block';
+
+      const summaryEl = document.getElementById('result-summary');
+      summaryEl.innerHTML =
+        `<span style="color:var(--gold);font-family:sans-serif;font-size:0.8rem;">A:</span> ${currentInput.optionA || ''}` +
+        `<br><span style="color:var(--gold);font-family:sans-serif;font-size:0.8rem;">B:</span> ${currentInput.optionB || ''}` +
+        (currentInput.context ? `<br><span style="color:var(--muted);font-family:sans-serif;font-size:0.78rem;">Context:</span> <span style="font-size:0.9rem;color:var(--muted)">${currentInput.context}</span>` : '');
+
+      function renderOptionCard(obj, prefix) {
+        const o = obj || {};
+        document.getElementById(`res-${prefix}-intention`).textContent = o.intention || '';
+        document.getElementById(`res-${prefix}-harm`).textContent = o.harm || o.possible_harm || '';
+        document.getElementById(`res-${prefix}-tradeoffs`).textContent = o.tradeoffs || o.trade_offs || '';
+      }
+      renderOptionCard(data.option_a, 'a');
+      renderOptionCard(data.option_b, 'b');
+
+      // Detected bias
+      const biasSection = document.getElementById('bias-section');
+      const biasEl = document.getElementById('result-bias');
+      biasEl.innerHTML = '';
+      if (data.detected_bias && data.detected_bias.length > 0) {
+        biasSection.style.display = 'flex';
+        data.detected_bias.forEach(b => {
+          const span = document.createElement('span');
+          span.className = 'bias-tag';
+          span.textContent = b;
+          biasEl.appendChild(span);
+        });
+      } else { biasSection.style.display = 'none'; }
+
+      // Perspective
+      const perspEl = document.getElementById('result-perspective');
+      perspEl.innerHTML = '';
+      (data.perspective || []).forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'perspective-item';
+        div.textContent = p;
+        perspEl.appendChild(div);
+      });
+
+      document.getElementById('result-recommendation').textContent = data.recommendation || '';
+
+      // Base principles (always 4, short only)
+      const baseTagsEl = document.getElementById('result-base-tags');
+      baseTagsEl.innerHTML = '';
+      (data.base_principles || []).forEach(p => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.textContent = p.name;
+        baseTagsEl.appendChild(span);
+      });
+
+      // Contextual principles
+      const tagsEl = document.getElementById('result-tags');
+      tagsEl.innerHTML = '';
+      const reasonsById = {};
+      (data.principle_reasons || []).forEach(r => { reasonsById[r.principle_id] = r.reason; });
+      (data.selected_principles || []).forEach(p => {
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-direction:column;gap:3px;';
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.textContent = p.name;
+        wrap.appendChild(span);
+        const reason = reasonsById[p.id];
+        if (reason) {
+          const rEl = document.createElement('div');
+          rEl.style.cssText = 'font-size:0.75rem;color:var(--muted);padding-left:4px;line-height:1.4;';
+          rEl.textContent = `Why relevant: ${reason}`;
+          wrap.appendChild(rEl);
+        }
+        tagsEl.appendChild(wrap);
+      });
+
+      // Hashes (contextual only)
+      const hashesEl = document.getElementById('result-hashes');
+      hashesEl.innerHTML = '';
+      (data.selected_principles || []).forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'hash-row';
+        div.textContent = `${p.name} → ${p.hash.slice(0, 16)}...`;
+        hashesEl.appendChild(div);
+      });
+
+      // Sub-principles
+      const subSection = document.getElementById('sub-principles-section');
+      const subEl = document.getElementById('result-sub-principles');
+      subEl.innerHTML = '';
+      const subPrinciples = data.sub_principles_mentioned || [];
+      if (subPrinciples.length > 0) {
+        subSection.style.display = 'block';
+        subPrinciples.forEach(s => {
+          const div = document.createElement('div');
+          div.style.cssText = 'padding-left:12px;border-left:2px solid var(--border);';
+          const name = s.name_en || s.name_th || '';
+          const parent = s.parent_principle_id || '';
+          const why = s.why_relevant || '';
+          div.innerHTML =
+            `<span style="font-size:0.88rem;color:var(--text);">${name}</span>` +
+            (parent ? `<span style="font-size:0.72rem;color:var(--muted);font-family:sans-serif;margin-left:8px;">via ${parent}</span>` : '') +
+            (why ? `<div style="font-size:0.78rem;color:var(--muted);margin-top:2px;line-height:1.4;">${why}</div>` : '');
+          subEl.appendChild(div);
+        });
+      } else {
+        subSection.style.display = 'none';
+      }
+
+      // Follow-up section
+      followupRemaining = data.followup_remaining ?? 0;
+      followupMax = data.followup_max ?? 0;
+      currentTier = data.tier || 'free';
+      renderFollowUpSection(data);
+
+      // Reset reflection
+      document.querySelectorAll('.btn-reflect').forEach(b => {
+        b.style.opacity = '1'; b.style.borderColor = ''; b.style.color = '';
+      });
+
+      // Dev mode panel + debug section
+      if (devMode) {
+        const tu = data.token_usage || {};
+        document.getElementById('dev-provider').textContent = `provider: ${data.provider_used || '—'}`;
+        document.getElementById('dev-model').textContent = `model: ${data.model_used || '—'}`;
+        document.getElementById('dev-tokens').textContent = `tokens: in ${tu.input ?? '—'} / out ${tu.output ?? '—'}`;
+        document.getElementById('dev-latency').textContent = `latency: ${data.latency_ms ?? '—'}ms`;
+        document.getElementById('dev-parse').textContent = `parse: ${data.parse_success === false ? 'FAIL' : 'OK'}`;
+        document.getElementById('dev-cache').textContent = `cache: ${data.cache_hit ? 'HIT' : 'MISS'}`;
+        document.getElementById('dev-principles').textContent = `base: ${(data.base_principles || []).length} | ctx: ${(data.selected_principles || []).length}`;
+
+        const dbSection = document.getElementById('dev-result-section');
+        const dbBody = document.getElementById('dev-result-body');
+        dbSection.style.display = 'block';
+        const mt = data.mapping_trace || {};
+        dbBody.innerHTML = [
+          `<b>provider_used:</b> ${data.provider_used || '—'}`,
+          `<b>model_used:</b> ${data.model_used || '—'}`,
+          `<b>latency_ms:</b> ${data.latency_ms ?? '—'}`,
+          `<b>parse_success:</b> ${data.parse_success === false ? 'FAIL' : 'OK'}`,
+          `<b>base_principles:</b> ${(data.base_principles || []).map(p => p.name).join(', ')}`,
+          `<b>contextual_principles:</b> ${(data.selected_principles || []).map(p => p.name).join(', ')}`,
+          `<b>principle_hashes:</b><br>${(data.selected_principles || []).map(p => `${p.name}: ${p.hash}`).join('<br>')}`,
+          `<b>user_dhamma_level:</b> ${data.user_dhamma_level || '—'}`,
+          `<b>exposure_level:</b> ${data.exposure_level || '—'}`,
+          `<b>risk_flags:</b> ${JSON.stringify(data.risk_flags || {})}`,
+          `<b>── Sub-principles Mentioned ──</b>`,
+          (data.sub_principles_mentioned || []).length > 0
+            ? (data.sub_principles_mentioned || []).map(s => `${s.name_en} (parent: ${s.parent_principle_id}) — ${s.why_relevant}`).join('<br>')
+            : '(none)',
+          `<b>── Mapping Debug ──</b>`,
+          `<b>input_terms_matched:</b><br>${(mt.input_terms_matched || []).map(t => `${t.term} [${t.source}→${t.concept}]`).join('<br>')}`,
+          `<b>detected_concepts:</b><br>${(mt.detected_concepts || []).map(c => `${c.concept} (score:${c.score}) → ${c.matched_terms.join(', ')}`).join('<br>')}`,
+          `<b>candidate_principles (top 10):</b><br>${(mt.candidate_principles || []).map(p => `${p.name} base:${p.base_weight} final:${p.final_score} [${(p.reasons||[]).join(', ')}]`).join('<br>')}`,
+          `<b>final_contextual_principles:</b> ${(mt.final_contextual_principles || []).join(', ')}`,
+        ].join('<br><br>');
+      }
+    }
+
+    // ── Follow-up ──
+    function renderFollowUpSection(data) {
+      const t = T[currentLang];
+      const section = document.getElementById('fu-section');
+      if (!currentSessionId) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+
+      // Context
+      document.getElementById('fu-context-summary').textContent =
+        currentInput.optionA && currentInput.optionB
+          ? `A: ${currentInput.optionA}  ·  B: ${currentInput.optionB}`
+          : (data.recommendation || '');
+      document.getElementById('fu-context-tradeoff').textContent = data.key_tradeoff || data.recommendation?.split(/\.\s/)[0] || '';
+
+      // Chips: AI suggestions first, then fixed quick actions
+      const chipsEl = document.getElementById('fu-chips');
+      chipsEl.innerHTML = '';
+      const aiChips = (data.follow_up_suggestions || []).slice(0, 2);
+      const fixedChips = t.fu_chips || [];
+      const allChips = [...aiChips, ...fixedChips].slice(0, 5);
+      allChips.forEach(chip => {
+        const btn = document.createElement('button');
+        btn.className = 'fu-chip';
+        btn.textContent = chip;
+        btn.onclick = () => { setFollowUpInput(chip); };
+        chipsEl.appendChild(btn);
+      });
+
+      // Quota
+      updateFollowUpQuota();
+
+      // Reset answer
+      const answerEl = document.getElementById('fu-answer');
+      answerEl.classList.remove('visible');
+      document.getElementById('fu-answer-text').textContent = '';
+      document.getElementById('fu-answer-rec').textContent = '';
+      document.getElementById('fu-exhausted').style.display = 'none';
+      document.getElementById('fu-input').value = '';
+      document.getElementById('fu-send-btn').disabled = false;
+    }
+
+    function updateFollowUpQuota() {
+      const t = T[currentLang];
+      const quotaEl = document.getElementById('fu-quota');
+      const sendBtn = document.getElementById('fu-send-btn');
+      const exhaustedEl = document.getElementById('fu-exhausted');
+      const inputArea = document.getElementById('fu-input').parentElement;
+
+      if (devMode) {
+        quotaEl.textContent = '∞';
+        quotaEl.classList.remove('warn');
+        return;
+      }
+
+      if (followupRemaining <= 0 && followupMax > 0) {
+        quotaEl.textContent = currentTier === 'free' ? t.fu_quota_used : '0 ' + t.fu_quota_supporter;
+        quotaEl.classList.add('warn');
+        sendBtn.disabled = true;
+        exhaustedEl.style.display = 'block';
+        inputArea.style.opacity = '0.4';
+        inputArea.style.pointerEvents = 'none';
+      } else if (currentTier === 'free') {
+        quotaEl.textContent = t.fu_quota_free;
+        quotaEl.classList.remove('warn');
+      } else {
+        quotaEl.textContent = `${followupRemaining} ${t.fu_quota_supporter}`;
+        quotaEl.classList.remove('warn');
+      }
+    }
+
+    function setFollowUpInput(text) {
+      const input = document.getElementById('fu-input');
+      input.value = text;
+      input.focus();
+    }
+
+    async function sendFollowUp() {
+      const input = document.getElementById('fu-input');
+      const question = input.value.trim();
+      if (!question || !currentSessionId || (!devMode && followupRemaining <= 0)) return;
+
+      const sendBtn = document.getElementById('fu-send-btn');
+      const answerEl = document.getElementById('fu-answer');
+      const answerTextEl = document.getElementById('fu-answer-text');
+      const answerRecEl = document.getElementById('fu-answer-rec');
+
+      sendBtn.disabled = true;
+      answerTextEl.innerHTML = `<span class="fu-answer-thinking">Thinking...</span>`;
+      answerRecEl.textContent = '';
+      answerEl.classList.add('visible');
+
+      // Quick if short, deep if long
+      const followupType = question.length <= 60 ? 'quick' : 'deep';
+
+      try {
+        const res = await fetch('/follow-up', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: currentSessionId, question, followupType })
+        });
+
+        if (res.status === 429) {
+          followupRemaining = 0;
+          updateFollowUpQuota();
+          answerEl.classList.remove('visible');
+          return;
+        }
+        if (!res.ok) throw new Error('failed');
+
+        const data = await res.json();
+        answerTextEl.textContent = data.answer || '';
+        answerRecEl.textContent = data.recommendation_update || '';
+        input.value = '';
+
+        if (devMode && data._dev) {
+          const d = data._dev;
+          const dbEl = document.getElementById('dev-result-body');
+          const driftInfo = `<b>── Follow-up Drift ──</b><br>` +
+            `drift_level: <b>${d.drift_level}</b><br>` +
+            `previous_concepts: ${d.previous_concepts.join(', ') || '—'}<br>` +
+            `followup_concepts: ${d.followup_concepts.join(', ') || '—'}<br>` +
+            `reused_principles: ${d.reused_principles.join(', ') || '—'}<br>` +
+            `added_principles: ${d.added_principles.join(', ') || '—'}<br>` +
+            `rerun_selector: ${d.rerun_selector}`;
+          dbEl.innerHTML += '<br><br>' + driftInfo;
+          document.getElementById('dev-result-section').style.display = 'block';
+        }
+
+        followupRemaining = data.followup_remaining ?? 0;
+        sendBtn.disabled = false;
+        updateFollowUpQuota();
+      } catch (_) {
+        answerTextEl.textContent = T[currentLang].alert_error;
+        sendBtn.disabled = false;
+      }
+    }
+
+    // Allow Enter key to send (Shift+Enter for newline)
+    document.addEventListener('keydown', function(e) {
+      if (e.target.id === 'fu-input' && e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendFollowUp();
+      }
+    });
+
+    // ── Clear buttons ──
+    function updateClearBtn(textarea) {
+      const btn = textarea.parentElement.querySelector('.clear-btn');
+      if (btn) btn.style.display = textarea.value ? 'block' : 'none';
+    }
+    function clearField(id) {
+      const el = document.getElementById(id);
+      if (el.disabled) return;
+      el.value = '';
+      const btn = el.parentElement.querySelector('.clear-btn');
+      if (btn) btn.style.display = 'none';
+      el.focus();
+    }
+
+    // ── Reflection ──
+    function recordReflection(value) {
+      const btns = document.querySelectorAll('.btn-reflect');
+      btns.forEach(b => { b.style.opacity = '0.4'; b.style.borderColor = ''; b.style.color = ''; });
+      event.target.style.opacity = '1';
+      event.target.style.borderColor = 'var(--gold)';
+      event.target.style.color = 'var(--gold)';
+    }
+
+    // ── Daily principle ──
+    function renderDailyPrinciple(text) {
+      const el = document.getElementById('daily-principle');
+      el.dataset.text = text;
+      el.innerHTML = `
+        <div style="text-align:center; padding:20px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface);">
+          <div style="font-size:0.7rem; font-family:sans-serif; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">${T[currentLang].daily_label}</div>
+          <div style="color:var(--gold-light); font-style:italic;">"${text}"</div>
+        </div>`;
+    }
+
+    // ── Dark mode ──
+    function toggleDark() {
+      document.body.classList.toggle('dark-mode');
+      document.getElementById('btn-darkmode').textContent =
+        document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
+    }
+
+    // Init
+    fetch('/config').then(r => r.json()).then(cfg => {
+      devMode = cfg.devMode === true;
+      if (devMode) {
+        document.getElementById('dev-banner').style.display = 'block';
+        document.getElementById('dev-panel').style.display = 'block';
+        document.body.style.paddingTop = '24px';
+      }
+    }).catch(() => {});
+    setLang('en');
+    loadExamplesData();
+  </script>
+</body>
+</html>
