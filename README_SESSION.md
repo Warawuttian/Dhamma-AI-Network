@@ -226,6 +226,29 @@ dhamma-ai-network/
 
 ---
 
+## Completed — 2026-05-31
+
+### docs/index.html — GitHub Pages fetch path fixes
+- `fetch('/' + pageId + '.json')` → `fetch('./data/' + pageId + '.json')`
+- `fetch('/principles')` → `fetch('./data/principles.json')`
+- `fetch('/examples')` → `fetch('./data/example_dilemmas.json')`
+- Root cause: GitHub Pages serves from `/Dhamma-AI-Network/` base; absolute paths failed
+
+### docs/styles/layout.css + public/styles/layout.css — mobile sidebar
+- Added `transition: transform 0.25s ease` to `.app-sidebar`
+- Added `.btn-hamburger`, `.sidebar-close`, `.sidebar-overlay` classes (hidden on desktop)
+- Mobile breakpoint: replaced `display:none` with `transform: translateX(-100%)` + `.open` state
+- `.sidebar-overlay.open` shows dark backdrop; `z-index` ordering: overlay 99, sidebar 150
+
+### docs/index.html + public/index.html — hamburger menu
+- `☰` button in header-left (hidden on desktop via CSS)
+- `<div class="sidebar-overlay">` before app layout — closes sidebar on tap outside
+- `id="app-sidebar"` added to `<nav>`; `✕` close button inside sidebar
+- `toggleSidebar()` / `closeSidebar()` JS functions added
+- `showScreen()` calls `closeSidebar()` — sidebar auto-closes on any navigation
+
+---
+
 ## Completed — 2026-05-29
 
 ### docs/example_dilemmas.md — 3 new examples added (examples 4–6)
