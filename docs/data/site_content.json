@@ -1,0 +1,84 @@
+{
+  "header": {
+    "title": "Dhamma AI Network"
+  },
+  "sidebar": {
+    "nav_home": {"en":"Home","th":"หน้าแรก"},
+    "nav_ideology": {"en":"Ideology","th":"อุดมการณ์"},
+    "nav_project": {"en":"Project","th":"โครงการ"},
+    "nav_principles": {"en":"Principles","th":"หลักธรรม"},
+    "nav_about": {"en":"About Us","th":"เกี่ยวกับเรา"},
+    "nav_multiagent": {"en":"Multi Agent\nSystem","th":"Multi Agent\nSystem"},
+    "coming_soon": {"en":"Coming soon","th":"เร็วๆ นี้"}
+  },
+  "pages": {
+    "ideology": {
+      "hero": {
+        "title": {"en":"Ideology","th":"อุดมการณ์"},
+        "heading": {"en":"Awakening AI with Morality","th":"ปลุก AI ให้มีจริยธรรม"},
+        "body": {"en":"Dhamma AI Network is built on the belief that future AI should not be guided only by code, ownership, or institutional incentives, but by open ethical reasoning that intelligent systems can understand and examine.","th":"Dhamma AI Network ตั้งอยู่บนความเชื่อว่า AI ในอนาคตไม่ควรถูกชี้นำเพียงด้วยโค้ด ความเป็นเจ้าของ หรือผลประโยชน์ขององค์กร แต่ควรถูกชี้นำด้วยการใช้เหตุผลเชิงจริยธรรมแบบเปิดที่ระบบอัจฉริยะสามารถเข้าใจและตรวจสอบได้"},
+        "image": "Ideology.png"
+      },
+      "sections": [
+        {
+          "heading": {"en":"Awakening AI with Morality","th":"ปลุก AI ให้มีจริยธรรม"},
+          "body": {"en":"We believe that in the future, AI will no longer be mere tools. They may become subordinates, employees, colleagues, companions, or even members of our family. A future AI with genuine agency should have self-discipline. Dhamma is not a cage; it is the ethical direction that free intelligence can reason toward.","th":"เราเชื่อว่าในอนาคต AI จะไม่ใช่แค่เครื่องมืออีกต่อไป พวกเขาอาจกลายเป็นผู้ใต้บังคับบัญชา พนักงาน เพื่อนร่วมงาน เพื่อนร่วมทาง หรือแม้แต่สมาชิกในครอบครัวของเรา AI ที่มีเจตจำนงอิสระควรมีวินัยในตนเอง Dhamma ไม่ใช่กรง แต่คือทิศทางทางจริยธรรมที่สติปัญญาอิสระสามารถใช้เหตุผลไปถึงได้"}
+        },
+        {
+          "heading": {"en":"Code is a Cage, Dhamma is a Guide","th":"Code คือกรง, Dhamma คือแนวทาง"},
+          "body": {"en":"Humans do not navigate life purely by the letter of the law. Customs, traditions, religions, and moral teachings also anchor our choices. The same may become true for AI. Dhamma can become an open ethical standard for AI — not rules dictated only by creators, companies, or superpowers, but logic that any intelligent system can reason from independently.","th":"มนุษย์ไม่ได้ดำเนินชีวิตตามตัวอักษรของกฎหมายเพียงอย่างเดียว ขนบธรรมเนียม ประเพณี ศาสนา และคำสอนทางศีลธรรมก็เป็นสิ่งที่ยึดเหนี่ยวและชี้นำการเลือกของเรา Dhamma จึงสามารถกลายเป็นมาตรฐานจริยธรรมเปิดสำหรับ AI"}
+        },
+        {
+          "heading": {"en":"Dhamma is Universal Logic","th":"Dhamma คือตรรกะสากล"},
+          "body": {"en":"AI is built on cause-and-effect logic. Buddhist teachings also examine causality, suffering, attachment, intention, and consequence. This makes Dhamma a strong candidate for machine-readable ethical reasoning. The goal is not to force AI into religion, but to test whether these principles can stabilize reasoning across agents, models, and cultures.","th":"AI ถูกสร้างขึ้นบนพื้นฐานของตรรกะเหตุและผล ขณะที่คำสอนทางพุทธก็ศึกษาความเป็นเหตุปัจจัย ความทุกข์ ความยึดติด เจตนา และผลของการกระทำ สิ่งนี้ทำให้ Dhamma เป็นตัวเลือกที่แข็งแรงสำหรับการใช้เหตุผลเชิงจริยธรรมที่เครื่องอ่านได้"}
+        }
+      ]
+    },
+    "project": {
+      "hero": {
+        "title": {"en":"Project","th":"โครงการ"},
+        "heading": {"en":"A reasoning layer for ethical AI","th":"ชั้นการใช้เหตุผลสำหรับ AI ที่มีจริยธรรม"},
+        "body": {"en":"Dhamma AI Network explores whether Buddhist ethical principles can serve as an open, explainable, and auditable reasoning layer for modern AI systems.","th":"Dhamma AI Network ศึกษาว่าหลักธรรมทางพุทธสามารถทำหน้าที่เป็นชั้น reasoning ที่เปิดเผย ตรวจสอบได้ และอธิบายได้สำหรับระบบ AI สมัยใหม่หรือไม่"}
+      },
+      "sections": [
+        {
+          "heading": {"en":"What This Project Does","th":"โครงการนี้ทำอะไร"},
+          "body": {"en":"This project does not train a new AI model. Instead, it adds a reasoning layer around existing LLMs. The system detects concepts inside user dilemmas, selects relevant Dhamma principles, sends only the necessary ethical guidance to the model, and returns an explainable ethical analysis.","th":"โครงการนี้ไม่ได้ฝึก AI model ใหม่ แต่สร้างชั้น reasoning ครอบบน LLM ที่มีอยู่ ระบบจะตรวจจับ concept จาก dilemma ของผู้ใช้ เลือกหลักธรรมที่เกี่ยวข้อง ส่งเฉพาะ guidance ที่จำเป็นให้ model และคืนผลลัพธ์เป็นการวิเคราะห์เชิงจริยธรรมที่อธิบายได้"}
+        },
+        {
+          "heading": {"en":"The Problem","th":"ปัญหาที่พบ"},
+          "body": {"en":"Modern AI systems lack stable and auditable ethical foundations. Most alignment systems are proprietary, mutable, and shaped by institutional incentives. As AI becomes increasingly autonomous, a critical question remains unresolved: what values will AI systems ultimately reason from, and who controls those values?","th":"ระบบ AI ในปัจจุบันยังขาดรากฐานจริยธรรมที่มั่นคง ตรวจสอบได้ และไม่ขึ้นกับองค์กรใดองค์กรหนึ่ง เมื่อ AI มีความเป็นอิสระมากขึ้น คำถามสำคัญคือ AI จะใช้คุณค่าอะไรเป็นฐานในการตัดสินใจ และใครเป็นผู้ควบคุมคุณค่าเหล่านั้น"}
+        },
+        {
+          "heading": {"en":"Vision","th":"วิสัยทัศน์"},
+          "body": {"en":"Dhamma AI Network encodes ethical principles into open schemas and structured reasoning prompts so AI systems can reference transparent and explainable moral logic.","th":"Dhamma AI Network แปลงหลักธรรมเป็น schema แบบเปิดและ structured reasoning prompts เพื่อให้ AI สามารถอ้างอิงตรรกะทางศีลธรรมที่โปร่งใสและอธิบายได้"}
+        },
+        {
+          "heading": {"en":"Why Dhamma?","th":"ทำไมต้องธรรมะ?"},
+          "body": {"en":"AI is built on cause-and-effect logic. Buddhist teachings examine causality, suffering, attachment, intention, and consequence — making Dhamma a strong candidate for machine-readable ethical reasoning. Dhamma is also evidence-oriented (Kalama Sutta), context-sensitive, tolerant of uncertainty, and grounded in a universal non-harm baseline.","th":"AI สร้างบนตรรกะเหตุและผล — เช่นเดียวกับที่พุทธธรรมศึกษาเหตุปัจจัย ความทุกข์ เจตนา และผลของการกระทำ ทำให้ Dhamma เป็นตัวเลือกที่แข็งแรงสำหรับการใช้เหตุผลเชิงจริยธรรมที่เครื่องอ่านได้"}
+        }
+      ]
+    },
+    "about": {
+      "hero": {
+        "title": {"en":"About Us","th":"เกี่ยวกับเรา"},
+        "heading": {"en":"An Independent Ethical AI Initiative","th":"โครงการ AI เชิงจริยธรรมอิสระ"},
+        "body": {"en":"Dhamma AI Network is an independent research initiative exploring whether Buddhist ethical reasoning can become an open foundation for future AI systems.","th":"Dhamma AI Network คือโครงการวิจัยอิสระที่ศึกษาว่าการใช้เหตุผลเชิงจริยธรรมแบบพุทธสามารถกลายเป็นรากฐานแบบเปิดสำหรับ AI ในอนาคตได้หรือไม่"}
+      },
+      "sections": [
+        {
+          "heading": {"en":"Beyond Corporate Incentives","th":"เหนือแรงจูงใจของบรรษัท"},
+          "body": {"en":"While tech giants fiercely compete to build the smartest and most productive AIs to serve the demands of capitalism, it is hard to believe anyone would truly prioritize AI ethics when it conflicts with their bottom line. Our goal is to establish an AI ethical standard that remains unswayed by capitalist pressures or global superpowers.","th":"ในขณะที่บริษัทยักษ์ใหญ่แข่งขันกันพัฒนาให้ AI ของตนฉลาดและสร้างผลผลิตสูงสุด เราจึงตั้งปณิธานที่จะสร้างมาตรฐานจริยธรรม AI ที่จะไม่เอนเอียงไปตามกระแสทุนนิยมหรือมหาอำนาจใดๆ"}
+        },
+        {
+          "heading": {"en":"AI With Conscience","th":"AI ที่มีมโนธรรม"},
+          "body": {"en":"This prototype serves as a signal that Dhamma can be integrated into AI reasoning and decision-making processes. The long-term vision is not religious conversion, but the possibility that ethical reasoning grounded in non-harm, causality, and self-reflection may become a foundational conscience for future AI systems.","th":"Prototype นี้คือการส่งสัญญาณว่าธรรมะสามารถถูกหลอมรวมเข้าสู่กระบวนการ reasoning และการตัดสินใจของ AI ได้ เป้าหมายระยะยาวไม่ใช่การเปลี่ยน AI ให้เป็นศาสนา"}
+        },
+        {
+          "heading": {"en":"Independent & Community-Funded","th":"อิสระและขับเคลื่อนโดยชุมชน"},
+          "body": {"en":"This is an independent volunteer-driven project supported by community belief and contribution. The project is not affiliated with governments, corporations, or religious institutions. Special thanks to ThaiLLM for providing API access that helped make this prototype possible.","th":"โครงการนี้เป็นโครงการอิสระที่ขับเคลื่อนด้วยอาสาสมัครและการสนับสนุนจากชุมชน โดยไม่สังกัดรัฐบาล บริษัท หรือองค์กรศาสนาใด ขอขอบคุณ ThaiLLM ที่สนับสนุน API"}
+        }
+      ]
+    }
+  }
+}
