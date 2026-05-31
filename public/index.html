@@ -18,6 +18,7 @@
   <!-- HEADER -->
   <header class="app-header">
     <div class="header-left">
+      <button class="btn-hamburger" id="btn-hamburger" onclick="toggleSidebar()">☰</button>
       <img src="Chakra.svg" class="header-logo" alt="">
       <span class="header-title" id="header-title">Dhamma AI Network</span>
     </div>
@@ -51,11 +52,15 @@
     </div>
   </div>
 
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
   <!-- APP LAYOUT -->
   <div class="app-layout">
 
     <!-- SIDEBAR -->
-    <nav class="app-sidebar">
+    <nav class="app-sidebar" id="app-sidebar">
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
       <div class="sidebar-items">
         <button class="sidebar-item active" id="nav-home" onclick="showPage('home')" data-i18n="nav_home">Home</button>
         <button class="sidebar-item" id="nav-ideology" onclick="showPage('ideology')" data-i18n="nav_ideology">Ideology</button>
@@ -439,8 +444,19 @@ System</span>
       rerenderOpenPage();
     }
 
+    // ── Sidebar toggle (mobile) ──
+    function toggleSidebar() {
+      const open = document.getElementById('app-sidebar').classList.toggle('open');
+      document.getElementById('sidebar-overlay').classList.toggle('open', open);
+    }
+    function closeSidebar() {
+      document.getElementById('app-sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+    }
+
     // ── Screen nav ──
     function showScreen(id) {
+      closeSidebar();
       if (isExampleMode && id === 'screen-input') {
         isExampleMode = false;
         ['input-a','input-b','input-context'].forEach(elId => document.getElementById(elId).disabled = false);
