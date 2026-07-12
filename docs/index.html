@@ -546,7 +546,7 @@ System</span>
       let data = pageCache[pageId];
       if (!data) {
         try {
-          const res = await fetch('/' + pageId + '.json');
+          const res = await fetch('./data/' + pageId + '.json');
           data = await res.json();
           pageCache[pageId] = data;
         } catch (_) {
@@ -711,7 +711,7 @@ System</span>
 
     async function loadPrinciplesData() {
       try {
-        const res = await fetch('/principles');
+        const res = await fetch('./data/principles.json');
         const data = await res.json();
         allPrinciples = data.principles;
         buildCatGrid();
@@ -829,7 +829,7 @@ System</span>
 
     async function loadExamplesData() {
       try {
-        const res = await fetch('/examples');
+        const res = await fetch('./data/example_dilemmas.json');
         examplesData = await res.json();
         renderExampleCards();
       } catch (_) {}
@@ -1327,6 +1327,7 @@ System</span>
     }
 
     // Init
+        /*
     fetch('/config').then(r => r.json()).then(cfg => {
       devMode = cfg.devMode === true;
       if (devMode) {
@@ -1340,6 +1341,7 @@ System</span>
       // Models — always load regardless of auth
       fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     }).catch(() => {});
+    */
     setLang('en');
     loadExamplesData();
   </script>
