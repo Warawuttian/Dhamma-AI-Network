@@ -1,31 +1,89 @@
 {
-  "haiku": {
-    "provider": "anthropic",
-    "model": "claude-haiku-4-5-20251001",
-    "tier": "free",
-    "max_tokens": 600,
-    "supports_reasoning": true
-  },
-  "sonnet": {
-    "provider": "anthropic",
-    "model": "claude-sonnet-4-6",
-    "tier": "supporter",
-    "max_tokens": 900,
-    "supports_reasoning": true
-  },
-  "claude_haiku": {
-    "provider": "anthropic",
-    "model": "claude-haiku-4-5-20251001",
-    "max_tokens": 600
-  },
-  "claude_sonnet": {
-    "provider": "anthropic",
-    "model": "claude-sonnet-4-6",
-    "max_tokens": 900
-  },
-  "thaillm": {
-    "provider": "thaillm",
-    "model": "env:THAILLM_MODEL",
-    "max_tokens": 600
-  }
+"openthaigpt": {
+"provider": "thaillm",
+"model": "OpenThaiGPT-ThaiLLM-8b-Instruct-v7.2",
+"display_name": "OpenThaiGPT",
+"organization": "AIEAT",
+"requires_login": false,
+"dev_only": false,
+"max_tokens": 1600,
+"supports_reasoning": true
+},
+
+"pathumma": {
+"provider": "thaillm",
+"model": "Pathumma-ThaiLLM-qwen3-8b-think-3.0.0",
+"display_name": "Pathumma",
+"organization": "NECTEC",
+"requires_login": true,
+"dev_only": false,
+"max_tokens": 1600,
+"supports_reasoning": true
+},
+
+"typhoon": {
+"provider": "thaillm",
+"model": "Typhoon-S-ThaiLLM-8B-Instruct",
+"display_name": "Typhoon",
+"organization": "SCB 10X",
+"requires_login": true,
+"dev_only": false,
+"max_tokens": 1600,
+"supports_reasoning": true
+},
+
+"thalle": {
+"provider": "thaillm",
+"model": "THaLLE-0.2-ThaiLLM-8B-fa",
+"display_name": "THaLLE",
+"organization": "KBTG",
+"requires_login": true,
+"dev_only": false,
+"max_tokens": 1600,
+"supports_reasoning": true
+},
+
+"claude_haiku": {
+"provider": "anthropic",
+"model": "claude-haiku-4-5-20251001",
+"display_name": "Claude Haiku",
+"organization": "Anthropic",
+"requires_login": false,
+"dev_only": true,
+"max_tokens": 1600,
+"supports_reasoning": true
+},
+
+"claude_sonnet": {
+"provider": "anthropic",
+"model": "claude-sonnet-4-6",
+"display_name": "Claude Sonnet",
+"organization": "Anthropic",
+"requires_login": false,
+"dev_only": true,
+"max_tokens": 2000,
+"supports_reasoning": true
+},
+
+"claude_opus": {
+"provider": "anthropic",
+"model": "claude-opus-4-1",
+"display_name": "Claude Opus",
+"organization": "Anthropic",
+"requires_login": false,
+"dev_only": true,
+"max_tokens": 2000,
+"supports_reasoning": true
+},
+
+"qwen35b": {
+"provider": "9arm",
+"display_name": "Qwen 3.6 35B",
+"organization": "9arm",
+"model": "qwen3.6-35b-a3b",
+"requires_login": true,
+"dev_only": false,
+"max_tokens": 2000,
+"supports_reasoning": true
+}
 }

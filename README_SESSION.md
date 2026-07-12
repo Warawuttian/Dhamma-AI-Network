@@ -344,3 +344,177 @@ Added CSS for new components in `public/styles/components.css`:
 Fixed orphaned `</style>` tag in index.html head.
 Removed unused `siteContent` variable and `loadSiteContent()`.
 Updated `docs/site_pages.md` to remove research_focus from ideology section.
+
+## Completed — 2026-06-06
+
+### Docs reorganized
+- Merged 6 active docs in /docs into 4 (removed duplication of 3-tier access rules, joined abuse config split)
+- `auth_and_models.md` — Auth + model system (merged from 2 files)
+- `abuse_protection.md` — Rate limits + config.js spec (merged from 2 files)
+- Kept: `To improve Thai language.md`, `Support us_json.md`
+
+### Task 1: config.js + Abuse Protection
+- Created `config.js` — central config module, all limits from .env with defaults
+- Rewrote `server.js` abuse protection: IP-based rate limiting, cooldown, role-aware (anon/user/admin)
+- Removed old `TIER_LIMITS` / follow-up quota system
+- Error codes: `rate_limit_minute`, `guest_daily_limit`, `user_daily_limit`
+- Localized messages from `data/messages.json`
+
+### Task 2: Model System Cleanup
+- `agent.js`: removed `THAILLM_MAX_TOKENS` env override — each model uses its own `max_tokens` from registry
+- `agent.js`: removed `THAILLM_MODEL` env var (model names now live in model_registry.json)
+- `agent.js`: `resolveProvider` now respects `dev_only` flag
+- `agent.js`: analyzeScenario returns `display_name` + `organization` fields
+- `server.js`: added `GET /models` endpoint (filters by dev_only + requires_login)
+- Frontend: DEV panel now shows `Model: <display_name>` / `By: <organization>`
+- Frontend: provider dropdown populated dynamically from `/models`
+
+### Task 3: Thai Language Pipeline
+- `agent.js`: `pickField()` helper selects Thai fields (`_th`) when lang=th with fallback
+- `agent.js`: `formatPrincipleCompact(p, lang)` — Thai label order: `name_th || thai || name || name_en`
+- `agent.js`: `buildSystemPrompt` — interpretations use `text_th`/`meaning_th` for Thai
+- `adaptive_response.js`: `formatPrincipleForPrompt(principle, exposureLevel, lang)` — full Thai field precedence
+- `selector.js`: selected principles now include `name_th` and `behavior_instruction_th` fields
+
+### Task 4: Support Us Page
+- Created `data/support_us.json` — bilingual EN/TH, page_type support-us
+- `server.js`: `GET /support_us.json` route
+- Frontend: `screen-support_us` screen, sidebar nav button, i18n keys (`nav_support`)
+- Frontend: `renderSocialLinks()` renderer for `social_links` type sections
+- `components.css`: `.social-links-row` + `.social-link-item` styles
+
+## Completed — 2026-06-06 (Google OAuth)
+
+- Installed: `passport`, `passport-google-oauth20`, `express-session`
+- Created `auth.js`: Google strategy, user model `{ id, email, name, picture, role }`, admin role via `ADMIN_EMAILS` env var, exports `AUTH_ENABLED` flag
+- `server.js`: session middleware (`SESSION_SECRET` from .env), passport init, auth routes:
+  - `GET /auth/google` — redirect to Google (only if AUTH_ENABLED)
+  - `GET /auth/google/callback` — callback, redirects to `/`
+  - `GET /auth/logout` — logout, redirects to `/`
+  - `GET /auth/me` — returns `{ loggedIn, user }` for frontend
+  - `GET /config` — now includes `authEnabled`
+- Frontend: Login button visible only when `authEnabled=true` + not logged in; logged-in state shows avatar + name with dropdown (email + Logout link); `applyAuthState()` called after `/auth/me`; `/models` fetched after auth check so role is correct; `currentUser` set globally
+- `layout.css`: `.user-menu`, `.user-menu-toggle`, `.user-avatar`, `.user-dropdown` styles
+- `auth_and_models.md` moved to `docs/Done/`
+
+## Completed — 2026-06-15 (Debug Panel, Home Page, Follow-up Counter)
+
+### Debug Panel — always visible, read-only when not in DEV_MODE
+- Debug panel now shows regardless of `DEV_MODE` (was: hidden when `DEV_MODE=false`)
+- When `DEV_MODE=true`: full panel with model switching (unchanged)
+- When `DEV_MODE=false`: read-only explainability panel — shows model, provider/organization, tokens in/out, latency, cache status, principle count; no model switching
+- Model selection rules unchanged: anonymous gets OpenThaiGPT only; logged-in users get OpenThaiGPT + Pathumma + Typhoon + THaLLE + Qwen 3.6 35B; Claude models remain DEV-only
+
+### Home Page — "Before You Begin" section + footer notice
+- Added compact "Before You Begin" section above the analysis form (visible only when not logged in)
+- Two cards: "Choose Your Language" and "Please Sign in for More Analyses and More Models"
+- Lists available models per user tier (anonymous vs logged-in)
+- Footer notice added: "Dhamma AI Network provides ethical reasoning and educational reflection. It is not a substitute for professional legal, medical, mental health, or emergency services." (EN/TH bilingual)
+- Section auto-hides when user logs in; subtle, unobtrusive design; no popup
+
+### Follow-up daily limits — remaining counter fixed
+- Follow-up remaining counter now uses actual backend usage data instead of hardcoded value
+- Counter updates immediately after each successful follow-up
+- Refreshes correctly after page reload (reads from session state)
+- Example: limit=3 → shows 3, 2, 1, 0 as follow-ups are consumed
+
+## Completed — 2026-06-15
+
+### data/model_registry.json — added 9arm Qwen 3.6 35B model
+- New entry: `qwen35b` with `provider: "9arm"`, `requires_login: true`, `max_tokens: 2000`
+- Visible to logged-in users and admins; not visible to anonymous users
+
+### agent.js — 9arm provider support
+- Added `NINEARM_API_KEY` and `NINEARM_BASE_URL` env var loading
+- Added `callWithProvider` branch for `provider === "9arm"` — OpenAI-compatible `fetch` to `${NINEARM_BASE_URL}/chat/completions`
+- Same pattern as ThaiLLM: system prompt + user message, Bearer auth, usage extraction
+
+### agent.js — Continue Thinking (follow-up) refactor
+- `analyzeFollowUp` now accepts `requestedProvider` parameter
+- Uses `resolveProvider(requestedProvider, tier)` + `getProviderConfig` + `callWithProvider` instead of hardcoded `getModel(tier)` + direct Anthropic SDK call
+- Result includes `provider_used`, `latency_ms`, `model_used` (same as initial analysis)
+- Follow-up now works with any configured model (OpenThaiGPT, Pathumma, Typhoon, THaLLE, Qwen 3.6 35B, Claude models in DEV)
+
+### server.js — pass requestedProvider to follow-up
+- `/follow-up` route now extracts `requestedProvider` from request body
+- Passes it to `analyzeFollowUp()`
+
+### public/index.html — follow-up sends selected model + removed DEV_MODE gate
+- `sendFollowUp()` now reads model select and sends `requestedProvider` (same as analysis)
+- Removed `!devMode && followupRemaining <= 0` gate — follow-up now works for all users
+- Rate limiting handled by server-side `checkRateLimit` (returns 429)
+
+### .env — 9arm credentials added
+- `NINEARM_API_KEY`, `NINEARM_BASE_URL`, `NINEARM_MODEL` added with real values
+
+### 9arm 524 error analysis (docs/Error1.md + Agent error Provider [qwen35b] fail.md)
+- Cloudflare 524 = origin server timeout, not a code bug
+- Verified: `qwen3.6-35b-a3b` is a supported model on 9arm (confirmed via /models endpoint)
+- Full system prompt payload: ~3,700 chars (~925 tokens) + 200 char user message = ~4,258 chars total
+- Payload structure identical to ThaiLLM (OpenAI-compatible /chat/completions)
+- Replay test: same full prompt completed in 14.8s on 9arm — 524 was transient infrastructure issue
+- No code changes needed for the 524; only improvement would be fetch timeout (deferred)
+
+## Completed — 2026-06-16 (Home Page UX Revision + Language Selector + Dark Mode Icon)
+
+### Home Page UX Revision (docs/Home Page UX Revision.md)
+- Removed "Before You Begin" two-card section from screen-input (was: language card + sign-in card)
+- Added compact inline notice (`#home-notice`) in top-right of landing screen (screen-landing)
+- Notice text: EN="Before you start, please select your language and login for full version." / TH="ก่อนเริ่ม โปรดเลือกภาษาและเข้าส่อระบบเพื่่อใช้งานฉบับเต็ม"
+- Notice visible only on landing screen when NOT logged in; disappears after login
+- `updateHomeNotice(loggedIn)` function added; called from `showScreen()` and `applyAuthState()`
+- Removed old `byb_*` i18n keys from both EN and TH sections
+
+### Footer Disclaimer (docs/Home Page UX Revision.md)
+- Added `#footer-notice` section with `data-i18n="footer_disclaimer"` span
+- EN: "Dhamma AI Network provides ethical reflection and educational reasoning. It is not a substitute for legal, medical, mental-health, or emergency services."
+- TH: corrected Unicode combining characters in Thai text
+- CSS: `.footer-notice` — centered, smaller typography, muted styling
+
+### Language Selector UX (docs/Language selector UX.md)
+- Replaced EN/TH toggle buttons with compact dropdown (`#lang-dropdown`)
+- Desktop: "🌐 Language ▼" toggle button; Mobile: "🌐" icon only (text/arrow hidden via media query)
+- Dropdown items: 🇹🇭 ไทย and 🇬🇧 English
+- `toggleLangMenu()` / `closeLangMenu()` functions added; click-outside handler closes dropdown
+- `setLang()` updated to use dropdown active state + lang label
+- CSS: `.lang-dropdown`, `.lang-dropdown-toggle`, `.lang-dropdown-menu`, `.lang-option` in components.css
+- Old `.lang-toggle` / `.lang-btn` CSS removed from layout.css
+
+### Dark Mode Icon Toggle (docs/Language selector UX.md)
+- Replaced "Dark"/"Light" text button with 🌙/☀️ icon toggle
+- `toggleDark()` now sets `textContent` to emoji instead of text
+- `.header-btn-icon` class added for compact icon button styling
+
+### CSS cleanup
+- Removed `.byb-title`, `.byb-grid`, `.byb-card` styles from components.css
+- Added `.home-notice-text`, `.lang-dropdown*`, `.header-btn-icon` styles
+
+## Completed — 2026-06-16 (Error Fixes — Rate Limit Messages, Debug Panel, Thai Footer)
+
+### Error 1: Rate limit error messages (data/messages.json)
+- Already working correctly — no changes needed
+- Backend in `server.js` loads `data/messages.json` and returns localized `message` field with 429 responses
+- Frontend displays via `alert(errBody.message)` on both `/analyze` and `/follow-up` 429 errors
+- Error codes: `rate_limit_minute`, `guest_daily_limit`, `user_daily_limit`
+- Thai messages in `messages.json` confirmed readable
+
+### Error 2: Debug panel not showing data (user mode)
+- Root cause: debug panel population code was wrapped in `if (devMode)` block, so it only ran in DEV_MODE
+- Restructured debug panel to show for all users:
+  - Sidebar `#dev-panel` elements (`#dev-provider`, `#dev-model`, `#dev-tokens`, `#dev-latency`, `#dev-parse`, `#dev-cache`, `#dev-principles`) now populated for all users
+  - Result section `#dev-result-section` now always visible (removed `style="display:none"`)
+  - Basic info shown for all users: model, provider, latency, tokens, parse status, principle counts
+  - Advanced info (provider_key, model_id, cache, dhamma_level, exposure_level, risk_flags, sub-principles, mapping trace) remains behind `if (devMode)` guard
+
+### Error 3: Thai footer text unreadable
+- Line 439 had broken Thai text with extra spaces between every character (Unicode combining character issues)
+- Replaced with clean Unicode text matching line 389 (EN section version)
+- Both lines now use: `Dhamma AI Network เป็นเครื่องมือเพื่อไตรตรองเชิงจริยธรรมและการเรียนรู้ ไม่ใช่คำแนะนำทางกฎหมาย การแพทย์ สุขภาพจิต หรือบริการฉุกเฉิน`
+- Fixed missing comma after `footer_disclaimer` on line 439 (was causing JavaScript syntax error that prevented entire page script from loading)
+
+## Completed — 2026-06-18
+
+### Footer disclaimer — English translation fixed
+- Line 389 (`en` section) had Thai text instead of English for `footer_disclaimer`
+- Replaced with proper English: "Dhamma AI Network is a tool for ethical reflection and learning. It is not professional advice in law, medicine, mental health, or emergency services."
+- Thai section (`th`, line 439) retained unchanged

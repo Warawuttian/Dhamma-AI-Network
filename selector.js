@@ -359,8 +359,10 @@ function selectPrinciples(input, userTier = "free", preferredPrincipleHash = nul
       hash: p.hash,
       name: p.name,
       name_en: p.name_en || p.name,
+      name_th: p.name_th || "",
       thai: p.thai,
       behavior_instruction: p.behavior_instruction,
+      behavior_instruction_th: p.behavior_instruction_th || "",
       score: Math.round(Math.min(1.0, p.score) * 100) / 100,
       selector_reason: formatReasons(p.reasons),
     });

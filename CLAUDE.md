@@ -29,24 +29,26 @@ node server.js  # http://localhost:3000
 - `DEV_DEEP_MODE=true` — no longer needed (3 contextual principles always used now)
 - `EVAL_MODE=true` — enables few-shot examples (default: off)
 
-## Current Status (v0.5)
+## Current Status (v0.6)
 - 47 principles in data/principles.json
 - 12 concept domains in concept_keywords.json + concept_to_principles.json
-- UI: EN/TH bilingual, 9 screens (+ ideology/project/about pages)
-- Header + left sidebar nav; dark/light mode toggle
+- UI: EN/TH bilingual, 10 screens (+ ideology/project/about/support_us pages)
+- Header + left sidebar nav; icon-based dark mode toggle (🌙/☀️)
 - CSS split into public/styles/ (5 files)
-- 3 contextual principles in all modes (was 2 normal / 3 DEV_DEEP)
+- 3 contextual principles in all modes
 - Sub-principles shown in Principles Used section
-- data/about.json, ideology.json, project.json — individual page data (fetched on demand)
-- Frontend renderer: type-dispatched, handles hero_text/text_section/feature_grid/research_grid/layer_stack/image_section/comparison/status_table/supporters
+- data/about.json, ideology.json, project.json, support_us.json — page data (fetched on demand)
+- Frontend renderer: hero_text/text_section/feature_grid/research_grid/layer_stack/image_section/comparison/status_table/supporters/social_links
 - Base principles (always 4): Yonisomanasikara, Five Precepts, Kalama Sutta, Appamada
 - Crisis domain: short-circuit to crisis_first response mode
+- config.js: central config, all rate limits from .env
+- Abuse protection: IP rate limiting, role-aware (anon/user/admin), cooldown, localized errors
+- Model system: display_name/organization returned in API, /models endpoint, DEV dropdown dynamic
+- Thai pipeline: lang-aware field selection (behavior_instruction_th, name_th, text_th, meaning_th)
 
 ## What still needs doing
-1. Login system (Google OAuth or session-based)
-2. API usage limit (10/day per session)
-3. Blockchain logging (Stellar)
-4. AI-to-AI multi-agent system
+1. Blockchain logging (Stellar)
+2. AI-to-AI multi-agent system
 
 ## Claude Code Rules
 

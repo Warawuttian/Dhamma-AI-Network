@@ -1,0 +1,12 @@
+{
+  "en": {
+    "rate_limit_minute": "Please try again later.",
+    "guest_daily_limit": "Please login for more analysis.",
+    "user_daily_limit": "Sorry, you have reached your daily limit."
+  },
+  "th": {
+    "rate_limit_minute": "กรุณาลองใหม่อีกครั้งในภายหลัง",
+    "guest_daily_limit": "กรุณาเข้าสู่ระบบเพื่อรับสิทธิ์การวิเคราะห์เพิ่มเติม",
+    "user_daily_limit": "ขออภัย คุณใช้สิทธิ์การวิเคราะห์ครบตามจำนวนวันนี้แล้ว"
+  }
+}

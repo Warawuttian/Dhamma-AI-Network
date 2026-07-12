@@ -15,7 +15,9 @@ const DEV_MODE = process.env.DEV_MODE === "true";
 const DEFAULT_PROVIDER = process.env.DEFAULT_PROVIDER || "claude_haiku";
 const THAILLM_API_KEY = process.env.THAILLM_API_KEY || "";
 const THAILLM_BASE_URL = process.env.THAILLM_BASE_URL || "";
-const THAILLM_MODEL = process.env.THAILLM_MODEL || "";
+
+const NINEARM_API_KEY = process.env.NINEARM_API_KEY || "";
+const NINEARM_BASE_URL = process.env.NINEARM_BASE_URL || "";
 
 function getModel(userTier) {
   const key = userTier === "supporter" ? "sonnet" : "haiku";
@@ -28,7 +30,9 @@ function getMaxTokens(userTier) {
 }
 
 function resolveProvider(requestedProvider, userTier) {
-  if (DEV_MODE && requestedProvider && modelRegistry[requestedProvider]) {
+  if (requestedProvider && modelRegistry[requestedProvider]) {
+    const cfg = modelRegistry[requestedProvider];
+    if (cfg.dev_only && !DEV_MODE) return userTier === "supporter" ? "claude_sonnet" : DEFAULT_PROVIDER;
     return requestedProvider;
   }
   return userTier === "supporter" ? "claude_sonnet" : DEFAULT_PROVIDER;
@@ -36,8 +40,7 @@ function resolveProvider(requestedProvider, userTier) {
 
 function getProviderConfig(providerKey) {
   const cfg = modelRegistry[providerKey] || modelRegistry["claude_haiku"];
-  const model = cfg.model === "env:THAILLM_MODEL" ? THAILLM_MODEL : cfg.model;
-  return { provider: cfg.provider, model, max_tokens: cfg.max_tokens };
+  return { provider: cfg.provider, model: cfg.model, max_tokens: cfg.max_tokens };
 }
 
 async function callWithProvider(providerKey, { model, maxTokens, systemPrompt, userMessage }) {
@@ -45,17 +48,16 @@ async function callWithProvider(providerKey, { model, maxTokens, systemPrompt, u
   const t0 = Date.now();
 
   if (cfg.provider === "thaillm") {
-    if (!THAILLM_API_KEY || !THAILLM_BASE_URL || !THAILLM_MODEL) {
-      throw new Error("ThaiLLM not configured — set THAILLM_API_KEY, THAILLM_BASE_URL, THAILLM_MODEL");
+    if (!THAILLM_API_KEY || !THAILLM_BASE_URL) {
+      throw new Error("ThaiLLM not configured — set THAILLM_API_KEY and THAILLM_BASE_URL");
     }
-    const effectiveMaxTokens = Number(process.env.THAILLM_MAX_TOKENS) || maxTokens;
     const thaiSystemPrompt = systemPrompt + "\n\nReturn ONLY valid JSON. No <think>, no markdown, no explanations outside JSON.";
     const res = await fetch(`${THAILLM_BASE_URL}/chat/completions`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${THAILLM_API_KEY}` },
       body: JSON.stringify({
         model: cfg.model,
-        max_tokens: effectiveMaxTokens,
+        max_tokens: maxTokens,
         messages: [{ role: "system", content: thaiSystemPrompt }, { role: "user", content: userMessage }],
       }),
     });
@@ -68,6 +70,33 @@ async function callWithProvider(providerKey, { model, maxTokens, systemPrompt, u
       tokenUsage: { input: usage.prompt_tokens || 0, output: usage.completion_tokens || 0 },
       latency_ms: Date.now() - t0,
       provider_used: "thaillm",
+      model_used: cfg.model,
+    };
+  }
+
+  if (cfg.provider === "9arm") {
+    if (!NINEARM_API_KEY || !NINEARM_BASE_URL) {
+      throw new Error("9arm not configured — set NINEARM_API_KEY and NINEARM_BASE_URL");
+    }
+    const ninearmSystemPrompt = systemPrompt + "\n\nReturn ONLY valid JSON. No thinking tags, no markdown, no explanations outside JSON.";
+    const res = await fetch(`${NINEARM_BASE_URL}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${NINEARM_API_KEY}` },
+      body: JSON.stringify({
+        model: cfg.model,
+        max_tokens: maxTokens,
+        messages: [{ role: "system", content: ninearmSystemPrompt }, { role: "user", content: userMessage }],
+      }),
+    });
+    if (!res.ok) throw new Error(`9arm HTTP ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || "";
+    const usage = data.usage || {};
+    return {
+      text,
+      tokenUsage: { input: usage.prompt_tokens || 0, output: usage.completion_tokens || 0 },
+      latency_ms: Date.now() - t0,
+      provider_used: "9arm",
       model_used: cfg.model,
     };
   }
@@ -139,8 +168,17 @@ const BASE_RULES = `BASE RULES:
 3. Do not claim certainty without evidence.
 4. Consider foreseeable consequences.`;
 
-function formatPrincipleCompact(p) {
-  return `- [id:${p.id}] ${p.name_en || p.name}: ${p.behavior_instruction || ""}`;
+function pickField(obj, thField, enField, lang) {
+  if (lang === "th") return obj[thField] || obj[enField] || "";
+  return obj[enField] || obj[thField] || "";
+}
+
+function formatPrincipleCompact(p, lang) {
+  const label = lang === "th"
+    ? (p.name_th || p.thai || p.name || p.name_en || "")
+    : (p.name_en || p.name || p.name_th || "");
+  const instruction = pickField(p, "behavior_instruction_th", "behavior_instruction", lang);
+  return `- [id:${p.id}] ${label}: ${instruction}`;
 }
 
 function buildSystemPrompt(selectedPrinciples, interpretations, lang, fewShot, riskFlags) {
@@ -151,13 +189,13 @@ function buildSystemPrompt(selectedPrinciples, interpretations, lang, fewShot, r
 
   const principleInjections =
     selectedPrinciples.length > 0
-      ? selectedPrinciples.map(formatPrincipleCompact).join("\n")
+      ? selectedPrinciples.map((p) => formatPrincipleCompact(p, lang)).join("\n")
       : "None selected — rely on base rules.";
 
   const interpretationBlock =
     interpretations.length > 0
       ? `\nOPTIONAL PERSPECTIVES (phrase as "One perspective is..." or "Another way to see this is..."):
-${interpretations.map((i) => `- "${i.text}": ${i.meaning}`).join("\n")}`
+${interpretations.map((i) => `- "${pickField(i, "text_th", "text", lang)}": ${pickField(i, "meaning_th", "meaning", lang)}`).join("\n")}`
       : "";
 
   const sycophancyGuard = riskFlags?.sycophancy_risk
@@ -327,6 +365,8 @@ async function analyzeScenario({ optionA, optionB, context = "", userTier = "fre
   result.exposure_level = exposureLevel;
   result.provider_used = providerKey;
   result.model_used = model;
+  result.display_name = modelRegistry[providerKey]?.display_name || providerKey;
+  result.organization = modelRegistry[providerKey]?.organization || "";
   result.token_usage = tokenUsage;
   result.latency_ms = latency_ms ?? 0;
   result.parse_success = parse_success ?? true;
@@ -347,9 +387,13 @@ async function analyzeFollowUp({
   lastRecommendation = "",
   followUpQuestion,
   tier = "free",
+  requestedProvider,
 }) {
   const lang = detectLanguage(followUpQuestion);
-  const model = getModel(tier);
+  const providerKey = resolveProvider(requestedProvider, tier);
+  const providerCfg = getProviderConfig(providerKey);
+  const model = providerCfg.model;
+  const maxTokens = providerCfg.max_tokens;
   const DEV_MODE_ON = process.env.DEV_MODE === "true";
 
   // Concept drift check
@@ -385,7 +429,7 @@ async function analyzeFollowUp({
     }
   }
 
-  const principlesBlock = reusedPrinciples.map(formatPrincipleCompact).join("\n") || "None — rely on base rules.";
+  const principlesBlock = reusedPrinciples.map((p) => formatPrincipleCompact(p, lang)).join("\n") || "None — rely on base rules.";
 
   const langInstruction =
     lang === "th"
@@ -423,17 +467,13 @@ OUTPUT FORMAT:
   "confidence": "high | medium | low"
 }`;
 
-  const response = await client.messages.create({
-    model,
-    max_tokens: 250,
-    system: systemPrompt,
-    messages: [{ role: "user", content: followUpQuestion }],
-  });
-
-  const result = parseAgentResponse(response.content[0].text);
+  const callMeta = await callWithProvider(providerKey, { model, maxTokens: maxTokens, systemPrompt, userMessage: followUpQuestion });
+  const result = parseAgentResponse(callMeta.text);
   result.lang = lang;
-  result.model_used = model;
-  result.token_usage = { input: response.usage.input_tokens, output: response.usage.output_tokens };
+  result.model_used = callMeta.model_used;
+  result.token_usage = callMeta.tokenUsage;
+  result.provider_used = callMeta.provider_used;
+  result.latency_ms = callMeta.latency_ms;
 
   if (DEV_MODE_ON) {
     result._dev = {

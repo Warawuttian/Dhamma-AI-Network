@@ -1,7 +1,7 @@
 {
   "epistemic": {
     "desc": "Knowledge, truth, belief, evidence, verification, uncertainty, reasoning.",
-    "primary": ["kalama_sutta","yonisomanasikara","panna_3"],
+    "primary": ["kalama_sutta","yonisomanasikara","panna_3","middle_path"],
     "secondary": ["noble_eightfold_path","appamada","vipassana"],
     "conditional": {
       "wrong_view_or_dogma": ["micchaditthi_3"],
@@ -10,8 +10,8 @@
   },
   "ethical": {
     "desc": "Moral conflict, right/wrong, harm, fairness, integrity, ethical decision-making.",
-    "primary": ["five_precepts","hiri_ottappa","ahimsa"],
-    "secondary": ["cetana_3","noble_eightfold_path","ovadha_3"],
+    "primary": ["five_precepts","micchaditthi_3","hiri_ottappa","ahimsa"],
+    "secondary": ["cetana_3","noble_eightfold_path","ovadha_3","middle_path"],
     "conditional": {
       "life_or_death_decision": ["agati_4","cetana_3"],
       "systemic_or_social_harm": ["lokadhamma_8"]
@@ -19,7 +19,7 @@
   },
   "emotional": {
     "desc": "Emotions, feelings, defilements, anger, fear, grief, mental suffering.",
-    "primary": ["satipatthana_4","sampajanna_4","vedana_6"],
+    "primary": ["satipatthana_4","sampajanna_4","vedana_6","middle_path"],
     "secondary": ["nivarana_5","five_aggregates","paticcasamuppada"],
     "conditional": {
       "deep_craving_or_aversion": ["tanha_3","ten_defilements"],
@@ -29,7 +29,7 @@
   "causal": {
     "desc": "Cause and effect, patterns, cycles, systems, consequences, long-term impact.",
     "primary": ["paticcasamuppada","idappaccayata","four_noble_truths"],
-    "secondary": ["karma","yonisomanasikara","noble_eightfold_path"],
+    "secondary": ["karma","yonisomanasikara","noble_eightfold_path","middle_path"],
     "conditional": {
       "repeating_pattern_or_habit": ["sankhara_3"],
       "root_ignorance": ["avijja_8"]
@@ -47,7 +47,7 @@
   "craving": {
     "desc": "Craving, desire, addiction, obsession, compulsion, attachment to wanting.",
     "primary": ["tanha_3","upadana_4","ten_defilements"],
-    "secondary": ["paticcasamuppada","vedana_6","six_sense_spheres"],
+    "secondary": ["paticcasamuppada","vedana_6","six_sense_spheres","middle_path"],
     "conditional": {
       "sensory_obsession": ["four_primary_elements","six_sense_spheres"],
       "deep_delusion": ["avijja_8","micchaditthi_3"]
@@ -55,8 +55,8 @@
   },
   "social": {
     "desc": "Relationships, trust, loyalty, conflict, community, influence, social pressure.",
-    "primary": ["kalyanamitta","brahmavihara_4","sappurisa_dhamma_7"],
-    "secondary": ["five_precepts","hiri_ottappa","gratitude"],
+    "primary": ["kalyanamitta","brahmavihara_4","sappurisa_dhamma_7","kalama_sutta"],
+    "secondary": ["five_precepts","hiri_ottappa","gratitude","middle_path"],
     "conditional": {
       "bias_or_favoritism": ["agati_4"],
       "toxic_or_manipulative_dynamic": ["ten_defilements","upadana_4"]

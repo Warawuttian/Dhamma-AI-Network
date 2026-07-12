@@ -37,19 +37,26 @@ function getExposureLevel(userLevel) {
   return "plain";
 }
 
-function formatPrincipleForPrompt(principle, exposureLevel) {
-  const instruction = principle.behavior_instruction || principle.prompt_injection || "";
+function formatPrincipleForPrompt(principle, exposureLevel, lang) {
+  const isThai = lang === "th";
+  const instruction = isThai
+    ? (principle.behavior_instruction_th || principle.prompt_injection_th || principle.behavior_instruction || principle.prompt_injection || "")
+    : (principle.behavior_instruction || principle.prompt_injection || "");
+  const label = isThai
+    ? (principle.name_th || principle.thai || principle.name || principle.name_en || "")
+    : (principle.name_en || principle.name || "");
 
   if (exposureLevel === "plain") {
     return `- ${instruction}`;
   }
   if (exposureLevel === "light_dhamma") {
-    return `- [${principle.name}] ${instruction}`;
+    return `- [${label}] ${instruction}`;
   }
   // full_dhamma
-  const thai = principle.name_th || principle.thai || "";
+  const thaiName = principle.name_th || principle.thai || "";
   const layer = principle.layer || "contextual";
-  return `- [${principle.name}${thai ? " / " + thai : ""} (${layer})] ${instruction}`;
+  const nameDisplay = isThai ? label : `${principle.name_en || principle.name}${thaiName ? " / " + thaiName : ""}`;
+  return `- [${nameDisplay} (${layer})] ${instruction}`;
 }
 
 module.exports = { detectUserDhammaLevel, getExposureLevel, formatPrincipleForPrompt };

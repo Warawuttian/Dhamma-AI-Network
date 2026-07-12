@@ -23,31 +23,50 @@
       <span class="header-title" id="header-title">Dhamma AI Network</span>
     </div>
     <div class="header-right">
-      <button class="header-btn" id="btn-login" style="display:none">Login</button>
-      <div class="lang-toggle">
-        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" id="btn-th" onclick="setLang('th')">TH</button>
+      <!-- Auth: logged-out -->
+      <button class="header-btn" id="btn-login" style="display:none" onclick="window.location.href='/auth/google'">Login</button>
+      <!-- Auth: logged-in -->
+      <div class="user-menu" id="user-menu" style="display:none">
+        <button class="user-menu-toggle" id="user-menu-toggle" onclick="toggleUserMenu()">
+          <img class="user-avatar" id="user-avatar" src="" alt="">
+          <span class="user-name" id="user-name"></span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown" style="display:none">
+          <div class="user-dropdown-email" id="user-dropdown-email"></div>
+          <a class="user-dropdown-item" href="/auth/logout">Logout</a>
+        </div>
       </div>
-      <button class="header-btn" id="btn-darkmode" onclick="toggleDark()">Dark</button>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="lang-dropdown-toggle" id="lang-dropdown-toggle" onclick="toggleLangMenu()">🌐 <span id="lang-label">Language</span> <span id="lang-arrow">▼</span></button>
+        <div class="lang-dropdown-menu" id="lang-dropdown-menu" style="display:none;" role="menu">
+          <div class="lang-option active" data-lang="th" onclick="setLang('th')" role="menuitem" aria-label="Thai language">
+            <svg class="flag-icon" viewBox="0 0 6 3"><rect width="6" height="3" fill="#A51731"/><rect y="0.5" height="2" width="6" fill="#F4F5F8"/><rect y="1" height="1" width="6" fill="#2D2A4A"/><rect y="0" height="0.5" width="6" fill="#A51731"/><rect y="2.5" height="0.5" width="6" fill="#A51731"/></svg>
+            <span>TH</span>
+          </div>
+          <div class="lang-option" data-lang="en" onclick="setLang('en')" role="menuitem" aria-label="English language">
+            <svg class="flag-icon" viewBox="0 0 6 3"><rect width="6" height="3" fill="#012169"/><path d="M0,0 L6,3 M6,0 L0,3" stroke="#FFF" stroke-width="0.4"/><path d="M0,0 L6,3 M6,0 L0,3" stroke="#C8102E" stroke-width="0.15"/><line x1="3" y1="0" x2="3" y2="3" stroke="#FFF" stroke-width="0.6"/><line x1="0" y1="1.5" x2="6" y2="1.5" stroke="#FFF" stroke-width="0.6"/><line x1="0" y1="1.5" x2="6" y2="1.5" stroke="#C8102E" stroke-width="0.25"/></svg>
+            <span>GB</span>
+          </div>
+        </div>
+      </div>
+      <button class="header-btn header-btn-icon" id="btn-darkmode" onclick="toggleDark()" aria-label="Toggle dark mode">🌙</button>
     </div>
   </header>
 
   <!-- DEV PANEL -->
-  <div class="dev-panel" id="dev-panel" style="display:none">
+  <div class="dev-panel" id="dev-panel">
     <div class="dev-panel-title">Debug</div>
-    <div id="dev-provider">provider: —</div>
-    <div id="dev-model">model: —</div>
+    <div id="dev-provider">Model: —</div>
+    <div id="dev-model">By: —</div>
     <div id="dev-tokens">tokens: —</div>
     <div id="dev-latency">latency: —</div>
     <div id="dev-parse">parse: —</div>
     <div id="dev-cache">cache: —</div>
     <div id="dev-principles">principles: —</div>
-    <div style="margin-top:8px;">
+    <div id="dev-provider-select-wrap" style="margin-top:8px;display:none;">
       <label style="font-size:0.65rem;color:#8a7a60;text-transform:uppercase;letter-spacing:0.08em;">Provider</label>
       <select id="dev-provider-select" style="display:block;margin-top:4px;background:#2a2218;color:#c8b890;border:1px solid #5a4a30;border-radius:4px;padding:3px 6px;font-size:0.72rem;width:100%;">
-        <option value="claude_haiku">Claude Haiku</option>
-        <option value="claude_sonnet">Claude Sonnet</option>
-        <option value="thaillm">ThaiLLM</option>
+        <option value="">Loading...</option>
       </select>
     </div>
   </div>
@@ -67,6 +86,7 @@
         <button class="sidebar-item" id="nav-project" onclick="showPage('project')" data-i18n="nav_project">Project</button>
         <button class="sidebar-item" id="nav-principles" onclick="showPrinciples()" data-i18n="nav_principles">Principles</button>
         <button class="sidebar-item" id="nav-about" onclick="showPage('about')" data-i18n="nav_about">About Us</button>
+        <button class="sidebar-item" id="nav-support_us" onclick="showPage('support_us')" data-i18n="nav_support">Support Us</button>
       </div>
       <div class="sidebar-footer">
         <div class="sidebar-coming-soon">
@@ -82,6 +102,9 @@ System</span>
 
   <!-- SCREEN 1: LANDING -->
   <section id="screen-landing" class="screen active">
+    <div id="home-notice" style="text-align:right; margin-bottom:12px; display:none;">
+      <span class="home-notice-text" data-i18n="home_notice"></span>
+    </div>
     <div style="text-align:center; margin-top: 24px;">
       <h1 class="landing-headline" data-i18n="landing_headline">Stuck in a decision?<br>Let's think it through.</h1>
     </div>
@@ -123,6 +146,12 @@ System</span>
         <textarea id="input-context" rows="2" oninput="updateClearBtn(this)"></textarea>
         <button class="clear-btn" onclick="clearField('input-context')" style="display:none" tabindex="-1">×</button>
       </div>
+    </div>
+    <div class="field model-select-field">
+      <label data-i18n="label_model">Model</label>
+      <select id="model-select" class="model-select">
+        <option value="">Loading...</option>
+      </select>
     </div>
     <button class="btn btn-primary" onclick="runAnalysis()" data-i18n="btn_analyze">Analyze</button>
   </section>
@@ -247,9 +276,9 @@ System</span>
           <button class="btn btn-secondary" onclick="showScreen('screen-examples')" data-i18n="btn_example">See examples</button>
         </div>
 
-        <!-- DEV debug section (hidden for normal users) -->
-        <details class="dev-section" id="dev-result-section" style="display:none">
-          <summary>Debug Info (dev only)</summary>
+        <!-- Debug section (basic for all users, advanced for dev) -->
+        <details class="dev-section" id="dev-result-section">
+          <summary>Debug Info</summary>
           <div class="dev-section-body" id="dev-result-body"></div>
         </details>
 
@@ -295,6 +324,14 @@ System</span>
   <!-- SCREEN 9: ABOUT -->
   <section id="screen-about" class="screen screen-page"></section>
 
+  <!-- SCREEN 10: SUPPORT US -->
+  <section id="screen-support_us" class="screen screen-page"></section>
+
+    <!-- Footer notice -->
+    <div class="footer-notice" id="footer-notice">
+      <span data-i18n="footer_disclaimer"></span>
+    </div>
+
     </main>
   </div><!-- /.app-layout -->
 
@@ -302,7 +339,8 @@ System</span>
     // ── i18n ──
     const T = {
       en: {
-        nav_home: "Home", nav_ideology: "Ideology", nav_project: "Project", nav_principles: "Principles", nav_about: "About Us",
+        nav_home: "Home", nav_ideology: "Ideology", nav_project: "Project", nav_principles: "Principles", nav_about: "About Us", nav_support: "Support Us", label_model: "Model",
+        home_notice: "Before you start, please select your language and login for full version.",
         nav_multiagent: "Multi Agent\nSystem", coming_soon: "Coming soon",
         landing_headline: "Stuck in a decision?<br>Let's think it through.",
         landing_sub: "Not answers. Clearer thinking.",
@@ -347,10 +385,12 @@ System</span>
         explorer_sub: "Each principle has a role: some prevent harm, some analyze causes, some detect bias, and some bring balance.",
         search_placeholder: "Search stress, truth, trust...",
         pd_what: "What it does", pd_when: "Used when", pd_how: "How the AI uses this",
-        pd_example: "Example", pd_try: "Try with this principle"
+        pd_example: "Example", pd_try: "Try with this principle",
+        footer_disclaimer: "Dhamma AI Network is a tool for ethical reflection and learning. It is not professional advice in law, medicine, mental health, or emergency services."
       },
       th: {
-        nav_home: "หน้าแรก", nav_ideology: "อุดมการณ์", nav_project: "โครงการ", nav_principles: "หลักธรรม", nav_about: "เกี่ยวกับเรา",
+        nav_home: "หน้าแรก", nav_ideology: "อุดมการณ์", nav_project: "โครงการ", nav_principles: "หลักธรรม", nav_about: "เกี่ยวกับเรา", nav_support: "สนับสนุนโครงการ", label_model: "โมเดล",
+        home_notice: "ก่อนเริ่ม โปรดเลือกภาษาและเข้าสู่ระบบเพื่อใช้งานฉบับเต็ม",
         nav_multiagent: "Multi Agent\nSystem", coming_soon: "เร็วๆ นี้",
         landing_headline: "ลังเลอยู่ใช่ไหม?<br>มาคิดด้วยกัน",
         landing_sub: "ไม่ใช่คำตอบ แต่เป็นความชัดเจน",
@@ -396,6 +436,7 @@ System</span>
         search_placeholder: "ค้นหา ความเครียด ความจริง ความไว้ใจ...",
         pd_what: "ทำอะไร", pd_when: "ใช้เมื่อ", pd_how: "AI ใช้อย่างไร",
         pd_example: "ตัวอย่าง", pd_try: "ลองใช้หลักนี้",
+        footer_disclaimer: "Dhamma AI Network เป็นเครื่องมือเพื่อการไตรตรองเชิงจริยธรรมและการเรียนรู้ ไม่ใช่คำปรึกษาทางกฎหมาย การแพทย์ สุขภาพจิต หรือบริการฉุกเฉิน",
         examples: [
           { label: "ความจริง vs ความเมตตา", a: "พูดความจริงแม้จะทำให้คนที่รักเจ็บปวด", b: "เงียบเพื่อปกป้องความรู้สึกของเขา", q: '"ควรพูดความจริงทั้งที่อาจทำให้คนที่รักเจ็บปวดไหม?"' },
           { label: "ความโกรธ", a: "ตอบสนองทันทีขณะที่ยังโกรธ", b: "รอจนใจเย็นแล้วค่อยตอบ", q: '"โกรธอยู่ ควรตอบเลยหรือรอก่อน?"' },
@@ -406,8 +447,8 @@ System</span>
 
     let currentLang = 'en';
     let currentSessionId = null;
-    let followupRemaining = 0;
-    let followupMax = 0;
+    let followupRemaining = null;
+    let followupMax = null;
     let currentTier = 'free';
     let allPrinciples = [];
     let selectedCategory = 'All';
@@ -423,8 +464,11 @@ System</span>
     function setLang(lang) {
       currentLang = lang;
       document.getElementById('html-root').lang = lang;
-      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-      document.getElementById('btn-th').classList.toggle('active', lang === 'th');
+      document.getElementById('lang-label').textContent = lang === 'th' ? 'ไทย' : 'Language';
+      document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+      closeLangMenu();
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -442,6 +486,16 @@ System</span>
       renderExampleCards();
       if (allPrinciples.length > 0) renderPrinciplesGrid();
       rerenderOpenPage();
+    }
+
+    function toggleLangMenu() {
+      const menu = document.getElementById('lang-dropdown-menu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function closeLangMenu() {
+      const menu = document.getElementById('lang-dropdown-menu');
+      if (menu) menu.style.display = 'none';
     }
 
     // ── Sidebar toggle (mobile) ──
@@ -465,6 +519,7 @@ System</span>
       document.getElementById(id).classList.add('active');
       if (id === 'screen-examples') renderExampleCards();
       setSidebarActive(id === 'screen-principles' ? 'nav-principles' : id === 'screen-landing' ? 'nav-home' : null);
+      updateHomeNotice(currentUser !== null);
       window.scrollTo(0, 0);
     }
 
@@ -491,7 +546,7 @@ System</span>
       let data = pageCache[pageId];
       if (!data) {
         try {
-          const res = await fetch('./data/' + pageId + '.json');
+          const res = await fetch('/' + pageId + '.json');
           data = await res.json();
           pageCache[pageId] = data;
         } catch (_) {
@@ -515,7 +570,7 @@ System</span>
     }
 
     function rerenderOpenPage() {
-      ['ideology','project','about'].forEach(pageId => {
+      ['ideology','project','about','support_us'].forEach(pageId => {
         const screen = document.getElementById('screen-' + pageId);
         if (!screen) return;
         screen.dataset.rendered = '';
@@ -538,6 +593,7 @@ System</span>
       if (s.type === 'comparison') return renderComparison(s);
       if (s.type === 'status_table') return renderStatusTable(s);
       if (s.type === 'supporters') return renderSupporters(s);
+      if (s.type === 'social_links') return renderSocialLinks(s);
       return '';
     }
 
@@ -611,11 +667,40 @@ System</span>
     }
 
     function renderSupporters(s) {
-      const items = (s.items || []).map(item => {
-        const logo = item.logo ? `<div class="supporter-logo"><a href="${item.website}" target="_blank" rel="noopener"><img src="${item.logo}" height="${item.logo_height || 20}" alt="${item.name}"></a></div>` : '';
-        return `<div class="supporter-item">${logo}<div class="supporter-info"><div class="supporter-name">${item.name}</div><div class="supporter-desc">${t(item.description)}</div></div></div>`;
-      }).join('');
-      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="supporters-list">${items}</div></div>`;
+  const items = (s.items || []).map(item => `
+    <div class="supporter-item">
+      <a href="${item.website}" target="_blank" rel="noopener">
+        <img
+          src="${item.logo}"
+          height="${item.logo_height || 40}"
+          alt=""
+        >
+      </a>
+    </div>
+  `).join('');
+
+  return `
+    <div class="page-section" style="text-align:center;">
+      <div class="page-section-heading">${t(s.heading)}</div>
+
+      <p class="page-section-body">
+        ${t(s.description)}
+      </p>
+
+      <div class="supporters-list">
+        ${items}
+      </div>
+    </div>
+  `;
+}
+
+    function renderSocialLinks(s) {
+      const items = (s.items || []).map(item =>
+        `<a class="social-link-item" href="${item.url}" target="_blank" rel="noopener" aria-label="${item.platform}">
+          <img class="social-link-icon" src="https://cdn.simpleicons.org/${item.icon}" alt="" onerror="this.style.display='none';this.nextSibling.style.display='inline'"><span class="social-link-fallback" style="display:none">${item.platform}</span>
+        </a>`
+      ).join('');
+      return `<div class="page-section"><div class="page-section-heading">${t(s.heading)}</div><div class="social-links-row">${items}</div></div>`;
     }
 
     async function showPrinciples() {
@@ -626,7 +711,7 @@ System</span>
 
     async function loadPrinciplesData() {
       try {
-        const res = await fetch('./data/principles.json');
+        const res = await fetch('/principles');
         const data = await res.json();
         allPrinciples = data.principles;
         buildCatGrid();
@@ -744,7 +829,7 @@ System</span>
 
     async function loadExamplesData() {
       try {
-        const res = await fetch('./data/example_dilemmas.json');
+        const res = await fetch('/examples');
         examplesData = await res.json();
         renderExampleCards();
       } catch (_) {}
@@ -764,8 +849,8 @@ System</span>
       let _analyzeRes = null;
       try {
         const requestedProvider = devMode
-          ? (document.getElementById('dev-provider-select')?.value || undefined)
-          : undefined;
+          ? (document.getElementById('dev-provider-select')?.value || document.getElementById('model-select')?.value || undefined)
+          : (document.getElementById('model-select')?.value || undefined);
         _analyzeRes = await fetch('/analyze', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -773,6 +858,10 @@ System</span>
         });
         if (!_analyzeRes.ok) {
           const errBody = await _analyzeRes.json().catch(() => ({}));
+          if (_analyzeRes.status === 429 && errBody.message) {
+            alert(errBody.message);
+            return;
+          }
           throw new Error(errBody.detail || errBody.error || 'failed');
         }
         const data = await _analyzeRes.json();
@@ -928,29 +1017,38 @@ System</span>
         b.style.opacity = '1'; b.style.borderColor = ''; b.style.color = '';
       });
 
-      // Dev mode panel + debug section
-      if (devMode) {
-        const tu = data.token_usage || {};
-        document.getElementById('dev-provider').textContent = `provider: ${data.provider_used || '—'}`;
-        document.getElementById('dev-model').textContent = `model: ${data.model_used || '—'}`;
-        document.getElementById('dev-tokens').textContent = `tokens: in ${tu.input ?? '—'} / out ${tu.output ?? '—'}`;
-        document.getElementById('dev-latency').textContent = `latency: ${data.latency_ms ?? '—'}ms`;
-        document.getElementById('dev-parse').textContent = `parse: ${data.parse_success === false ? 'FAIL' : 'OK'}`;
-        document.getElementById('dev-cache').textContent = `cache: ${data.cache_hit ? 'HIT' : 'MISS'}`;
-        document.getElementById('dev-principles').textContent = `base: ${(data.base_principles || []).length} | ctx: ${(data.selected_principles || []).length}`;
+      // Debug section — basic info for all users, advanced for dev only
+      const dbSection = document.getElementById('dev-result-section');
+      const dbBody = document.getElementById('dev-result-body');
+      dbSection.style.display = 'block';
 
-        const dbSection = document.getElementById('dev-result-section');
-        const dbBody = document.getElementById('dev-result-body');
-        dbSection.style.display = 'block';
-        const mt = data.mapping_trace || {};
-        dbBody.innerHTML = [
-          `<b>provider_used:</b> ${data.provider_used || '—'}`,
-          `<b>model_used:</b> ${data.model_used || '—'}`,
-          `<b>latency_ms:</b> ${data.latency_ms ?? '—'}`,
-          `<b>parse_success:</b> ${data.parse_success === false ? 'FAIL' : 'OK'}`,
-          `<b>base_principles:</b> ${(data.base_principles || []).map(p => p.name).join(', ')}`,
-          `<b>contextual_principles:</b> ${(data.selected_principles || []).map(p => p.name).join(', ')}`,
-          `<b>principle_hashes:</b><br>${(data.selected_principles || []).map(p => `${p.name}: ${p.hash}`).join('<br>')}`,
+      const tu = data.token_usage || {};
+      const mt = data.mapping_trace || {};
+
+      // Populate sidebar debug panel (always visible)
+      document.getElementById('dev-provider').textContent = `Model: ${data.display_name || data.provider_used || '—'}`;
+      document.getElementById('dev-model').textContent = `By: ${data.organization || '—'}`;
+      document.getElementById('dev-tokens').textContent = `tokens: in ${tu.input ?? '—'} / out ${tu.output ?? '—'}`;
+      document.getElementById('dev-latency').textContent = `latency: ${data.latency_ms ?? '—'}ms`;
+      document.getElementById('dev-parse').textContent = `parse: ${data.parse_success === false ? 'FAIL' : 'OK'}`;
+      document.getElementById('dev-cache').textContent = `cache: ${data.cache_hit ? 'HIT' : 'MISS'}`;
+      document.getElementById('dev-principles').textContent = `base: ${(data.base_principles || []).length} | ctx: ${(data.selected_principles || []).length}`;
+
+      const basicInfo = [
+        `<b>Model:</b> ${data.display_name || data.provider_used || '—'}`,
+        `<b>By:</b> ${data.organization || '—'}`,
+        `<b>latency_ms:</b> ${data.latency_ms ?? '—'}`,
+        `<b>parse_success:</b> ${data.parse_success === false ? 'FAIL' : 'OK'}`,
+        `<b>tokens:</b> in ${tu.input ?? '—'} / out ${tu.output ?? '—'}`,
+        `<b>base_principles:</b> ${(data.base_principles || []).length}`,
+        `<b>contextual_principles:</b> ${(data.selected_principles || []).length}`,
+      ];
+
+      if (devMode) {
+        const advancedInfo = [
+          `<b>provider_key:</b> ${data.provider_used || '—'}`,
+          `<b>model_id:</b> ${data.model_used || '—'}`,
+          `<b>cache:</b> ${data.cache_hit ? 'HIT' : 'MISS'}`,
           `<b>user_dhamma_level:</b> ${data.user_dhamma_level || '—'}`,
           `<b>exposure_level:</b> ${data.exposure_level || '—'}`,
           `<b>risk_flags:</b> ${JSON.stringify(data.risk_flags || {})}`,
@@ -963,7 +1061,10 @@ System</span>
           `<b>detected_concepts:</b><br>${(mt.detected_concepts || []).map(c => `${c.concept} (score:${c.score}) → ${c.matched_terms.join(', ')}`).join('<br>')}`,
           `<b>candidate_principles (top 10):</b><br>${(mt.candidate_principles || []).map(p => `${p.name} base:${p.base_weight} final:${p.final_score} [${(p.reasons||[]).join(', ')}]`).join('<br>')}`,
           `<b>final_contextual_principles:</b> ${(mt.final_contextual_principles || []).join(', ')}`,
-        ].join('<br><br>');
+        ];
+        dbBody.innerHTML = [...basicInfo, '', ...advancedInfo].join('<br><br>');
+      } else {
+        dbBody.innerHTML = basicInfo.join('<br><br>');
       }
     }
 
@@ -1021,6 +1122,17 @@ System</span>
         return;
       }
 
+      // No analysis done yet — show neutral state
+      if (followupRemaining === null) {
+        quotaEl.textContent = '';
+        quotaEl.classList.remove('warn');
+        sendBtn.disabled = false;
+        exhaustedEl.style.display = 'none';
+        inputArea.style.opacity = '1';
+        inputArea.style.pointerEvents = 'auto';
+        return;
+      }
+
       if (followupRemaining <= 0 && followupMax > 0) {
         quotaEl.textContent = currentTier === 'free' ? t.fu_quota_used : '0 ' + t.fu_quota_supporter;
         quotaEl.classList.add('warn');
@@ -1046,7 +1158,7 @@ System</span>
     async function sendFollowUp() {
       const input = document.getElementById('fu-input');
       const question = input.value.trim();
-      if (!question || !currentSessionId || (!devMode && followupRemaining <= 0)) return;
+      if (!question || !currentSessionId) return;
 
       const sendBtn = document.getElementById('fu-send-btn');
       const answerEl = document.getElementById('fu-answer');
@@ -1062,13 +1174,20 @@ System</span>
       const followupType = question.length <= 60 ? 'quick' : 'deep';
 
       try {
+        const requestedProvider = devMode
+          ? (document.getElementById('dev-provider-select')?.value || document.getElementById('model-select')?.value || undefined)
+          : (document.getElementById('model-select')?.value || undefined);
         const res = await fetch('/follow-up', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId: currentSessionId, question, followupType })
+          body: JSON.stringify({ sessionId: currentSessionId, question, followupType, requestedProvider })
         });
 
         if (res.status === 429) {
+          const errBody = await res.json().catch(() => ({}));
+          if (errBody.message) {
+            alert(errBody.message);
+          }
           followupRemaining = 0;
           updateFollowUpQuota();
           answerEl.classList.remove('visible');
@@ -1150,7 +1269,61 @@ System</span>
     function toggleDark() {
       document.body.classList.toggle('dark-mode');
       document.getElementById('btn-darkmode').textContent =
-        document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
+        document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    }
+
+    // Auth
+    let currentUser = null;
+
+    function toggleUserMenu() {
+      const dd = document.getElementById('user-dropdown');
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    }
+
+    document.addEventListener('click', e => {
+      const menu = document.getElementById('user-menu');
+      if (menu && !menu.contains(e.target)) {
+        const dd = document.getElementById('user-dropdown');
+        if (dd) dd.style.display = 'none';
+      }
+      const langDD = document.getElementById('lang-dropdown');
+      if (langDD && !langDD.contains(e.target)) {
+        closeLangMenu();
+      }
+    });
+
+    function applyAuthState(cfg, me) {
+      if (cfg.authEnabled) {
+        if (me.loggedIn && me.user) {
+          currentUser = me.user;
+          document.getElementById('btn-login').style.display = 'none';
+          document.getElementById('user-menu').style.display = 'flex';
+          document.getElementById('user-avatar').src = me.user.picture || '';
+          document.getElementById('user-avatar').style.display = me.user.picture ? 'block' : 'none';
+          document.getElementById('user-name').textContent = me.user.name || '';
+          document.getElementById('user-dropdown-email').textContent = me.user.email || '';
+        } else {
+          document.getElementById('btn-login').style.display = 'inline-flex';
+        }
+      }
+      // Home notice: visible only on landing screen when NOT logged in
+      updateHomeNotice(me.loggedIn && me.user);
+    }
+
+    function updateHomeNotice(loggedIn) {
+      const notice = document.getElementById('home-notice');
+      if (!notice) return;
+      notice.style.display = (!loggedIn && document.getElementById('screen-landing').classList.contains('active')) ? 'block' : 'none';
+    }
+
+    function populateModelSelects(models) {
+      const optHtml = models.map(m =>
+        `<option value="${m.key}">${m.display_name} — ${m.organization}</option>`
+      ).join('');
+      const main = document.getElementById('model-select');
+      const dev  = document.getElementById('dev-provider-select');
+      if (main) main.innerHTML = optHtml;
+      if (dev)  dev.innerHTML  = optHtml;
     }
 
     // Init
@@ -1158,9 +1331,14 @@ System</span>
       devMode = cfg.devMode === true;
       if (devMode) {
         document.getElementById('dev-banner').style.display = 'block';
-        document.getElementById('dev-panel').style.display = 'block';
         document.body.style.paddingTop = '24px';
       }
+      // Dev panel always visible; provider select only in DEV_MODE
+      document.getElementById('dev-provider-select-wrap').style.display = devMode ? 'block' : 'none';
+      // Auth — independent of model loading
+      fetch('/auth/me').then(r => r.json()).then(me => applyAuthState(cfg, me)).catch(() => {});
+      // Models — always load regardless of auth
+      fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     }).catch(() => {});
     setLang('en');
     loadExamplesData();
