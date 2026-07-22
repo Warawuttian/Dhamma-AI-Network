@@ -90,6 +90,9 @@ async function callWithProvider(providerKey, { model, maxTokens, systemPrompt, u
     });
     if (!res.ok) throw new Error(`9arm HTTP ${res.status}: ${await res.text()}`);
     const data = await res.json();
+    console.log("===== 9ARM RESPONSE =====");
+    console.dir(data, { depth: null });
+    console.log("========================");
     const text = data.choices?.[0]?.message?.content || "";
     const usage = data.usage || {};
     return {
