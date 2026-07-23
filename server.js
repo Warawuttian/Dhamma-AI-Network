@@ -11,6 +11,7 @@ const { passport, AUTH_ENABLED } = require("./auth");
 const modelRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, "data/model_registry.json"), "utf8"));
 
 const app = express();
+app.set("trust proxy", true);
 const PORT = 3000;
 const DEV_MODE = process.env.DEV_MODE === "true";
 
