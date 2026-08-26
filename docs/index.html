@@ -1340,7 +1340,7 @@ System</span>
     }).catch(() => {});
     */
     // Auth — independent of model loading
-    fetch('/auth/me').then(r => r.json()).then(me => applyAuthState({}, me)).catch(() => {});
+    fetch('/auth/me', { cache: 'no-store' }).then(r => r.json()).then(me => applyAuthState({}, me)).catch(() => {});
     // Models — always load regardless of auth
     fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     setLang('en');
