@@ -1336,12 +1336,12 @@ System</span>
       }
       // Dev panel always visible; provider select only in DEV_MODE
       document.getElementById('dev-provider-select-wrap').style.display = devMode ? 'block' : 'none';
-      // Auth — independent of model loading
+      // Auth — independent of model loading*/
       fetch('/auth/me').then(r => r.json()).then(me => applyAuthState(cfg, me)).catch(() => {});
       // Models — always load regardless of auth
       fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     }).catch(() => {});
-    */
+  
     setLang('en');
     loadExamplesData();
   </script>
