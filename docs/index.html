@@ -1328,7 +1328,7 @@ System</span>
 
     // Init
         /*
-    fetch('./config').then(r => r.json()).then(cfg => {
+    fetch('/config').then(r => r.json()).then(cfg => {
       devMode = cfg.devMode === true;
       if (devMode) {
         document.getElementById('dev-banner').style.display = 'block';
@@ -1336,13 +1336,12 @@ System</span>
       }
       // Dev panel always visible; provider select only in DEV_MODE
       document.getElementById('dev-provider-select-wrap').style.display = devMode ? 'block' : 'none';
-      
+      // Auth — independent of model loading
+      fetch('/auth/me').then(r => r.json()).then(me => applyAuthState(cfg, me)).catch(() => {});
+      // Models — always load regardless of auth
+      fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     }).catch(() => {});
     */
-    // Auth — independent of model loading
-    fetch('/auth/me', { cache: 'no-store' }).then(r => r.json()).then(me => applyAuthState({}, me)).catch(() => {});
-    // Models — always load regardless of auth
-    fetch('/models').then(r => r.json()).then(populateModelSelects).catch(() => {});
     setLang('en');
     loadExamplesData();
   </script>
