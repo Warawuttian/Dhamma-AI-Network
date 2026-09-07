@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const { analyzeScenario, analyzeFollowUp } = require("./agent");
 const { CONFIG } = require("./config");
 const { passport, AUTH_ENABLED } = require("./auth");
+const { isConfigured: dbConfigured, listUsers } = require("./admin");
 
 const modelRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, "data/model_registry.json"), "utf8"));
 
@@ -152,6 +153,20 @@ if (AUTH_ENABLED) {
 
 app.get("/auth/logout", (req, res) => {
   req.logout(() => res.redirect("/"));
+});
+
+// GET /admin/users — authenticated admin only
+app.get("/admin/users", async (req, res) => {
+  if (!req.user) return res.status(401).json({ error: "Not authenticated" });
+  if (req.user.role !== "admin") return res.status(403).json({ error: "Admin access required" });
+  if (!dbConfigured()) return res.status(503).json({ error: "User database not configured" });
+  try {
+    const users = await listUsers();
+    res.json({ count: users.length, users });
+  } catch (err) {
+    console.error("Admin users error:", err.message);
+    res.status(500).json({ error: "Failed to load users" });
+  }
 });
 
 // GET /models — returns available models for the current user role

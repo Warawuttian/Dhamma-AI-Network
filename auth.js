@@ -1,5 +1,6 @@
 const passport = require("passport");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
+const { upsertUser } = require("./admin");
 
 const GOOGLE_CLIENT_ID     = process.env.GOOGLE_CLIENT_ID     || "";
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
@@ -23,6 +24,7 @@ if (AUTH_ENABLED) {
         picture: profile.photos?.[0]?.value || "",
         role:    ADMIN_EMAILS.includes(email) ? "admin" : "user",
       };
+      upsertUser(user).catch((err) => console.error("[admin] user upsert failed:", err.message));
       done(null, user);
     }
   ));
